@@ -1,0 +1,19 @@
+.login-box {
+  width: 100%;
+  background-image: url("../../utils/assets/asss.avif");
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-position: center center;
+  background-size: cover;
+  position: fixed;
+  overflow: auto;
+  top: 0px;
+  bottom: 0px;
+}
+
+.login {
+  background: white;
+  padding-bottom: 10px;
+}
