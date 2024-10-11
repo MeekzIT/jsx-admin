@@ -17,8 +17,6 @@ export default function MainLayout() {
     setClose(!isMobile);
   }, [isMobile]);
 
-  console.log(auth, "token");
-
   return (
     <div className="home">
       {data?.role == "owner" ? (

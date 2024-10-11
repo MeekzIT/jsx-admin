@@ -1,12 +1,13 @@
 import ClearAllIcon from "@mui/icons-material/ClearAll";
 import CloseIcon from "@mui/icons-material/Close";
 import { Tooltip } from "@mui/material";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import { useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import { themePallete } from "../../..";
 import { useIsMobile } from "../../../hooks/useScreenType";
 import {
+  BOARD_PAGE,
   CONSTRUCTOR_PAGE,
   EQUIPMENT_PAGE,
   HOME_PAGE,
@@ -24,11 +25,12 @@ const Sidebar = ({ close, setClose }) => {
 
   const superPages = [
     { id: 1, path: HOME_PAGE, name: "Главная" },
-    { id: 2, path: SERVICES_PAGE, name: "Services" },
+    { id: 2, path: SERVICES_PAGE, name: "Услуги" },
     { id: 3, path: SELF_PAGE, name: "Мойки Самообслуживания" },
     { id: 4, path: MODULE_PAGE, name: "Модули" },
     { id: 5, path: EQUIPMENT_PAGE, name: "Доп. Оборудования" },
-    { id: 6, path: CONSTRUCTOR_PAGE, name: "Cобери сам" },
+    { id: 6, path: BOARD_PAGE, name: "Печатные платы" },
+    { id: 7, path: CONSTRUCTOR_PAGE, name: "Cобери сам" },
   ];
 
   const renderLogo = useMemo(() => {

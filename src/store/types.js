@@ -1,3 +1,36 @@
 // auth
 export const LOGIN_ACTION = "LOGIN_ACTION";
 export const SET_AUTH = "SET_AUTH";
+
+export const GET_SERVICES = "GET_SERVICES";
+export const EDIT_SERVICES = "EDIT_SERVICES";
+export const DELETE_SERVICES = "DELETE_SERVICES";
+export const ADD_SERVICES = "ADD_SERVICES";
+
+export const GET_SELF = "GET_SELF";
+export const EDIT_SELF = "EDIT_SELF";
+export const DELETE_SELF = "DELETE_SELF";
+export const ADD_SELF = "ADD_SELF";
+export const ADD_SELF_IMAGE = "ADD_SELF_IMAGE";
+export const DELETE_SELF_IMAGE = "DELETE_SELF_IMAGE";
+
+export const GET_MODULE = "GET_MODULE";
+export const EDIT_MODULE = "EDIT_MODULE";
+export const DELETE_MODULE = "DELETE_MODULE";
+export const ADD_MODULE = "ADD_MODULE";
+export const ADD_MODULE_IMAGE = "ADD_MODULE_IMAGE";
+export const DELETE_MODULE_IMAGE = "DELETE_MODULE_IMAGE";
+
+export const GET_EQUIPMENT = "GET_EQUIPMENT";
+export const EDIT_EQUIPMENT = "EDIT_EQUIPMENT";
+export const DELETE_EQUIPMENT = "DELETE_EQUIPMENT";
+export const ADD_EQUIPMENT = "ADD_EQUIPMENT";
+export const ADD_EQUIPMENT_IMAGE = "ADD_EQUIPMENT_IMAGE";
+export const DELETE_EQUIPMENT_IMAGE = "DELETE_EQUIPMENT_IMAGE";
+
+export const GET_BOARD = "GET_BOARD";
+export const EDIT_BOARD = "EDIT_BOARD";
+export const DELETE_BOARD = "DELETE_BOARD";
+export const ADD_BOARD = "ADD_BOARD";
+export const ADD_BOARD_IMAGE = "ADD_BOARD_IMAGE";
+export const DELETE_BOARD_IMAGE = "DELETE_BOARD_IMAGE";
