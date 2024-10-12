@@ -1,6 +1,14 @@
 import React, { useState } from "react";
 import SlateEditor from "../SlateEditor/Editor";
-import { Box, Button, Card, Tab, Tabs, TextField } from "@mui/material";
+import {
+  Box,
+  Button,
+  Card,
+  Tab,
+  Tabs,
+  TextField,
+  Typography,
+} from "@mui/material";
 import DeleteModal from "../modals/DeleteModal";
 import ImageModal from "../modals/ImageModal";
 
@@ -34,14 +42,17 @@ const TextEditor = ({
   handleChange,
   handleTitleChange,
   handleDescriptionChange,
+  handleSingleImageChange,
   handleImageChange,
   handleDeleteImage,
   handleEdit,
   handleDelete,
 }) => {
   const [openDel, setOpenDel] = useState(false);
+  const [name, setName] = useState(false);
   const [openDelImage, setOpenDelImage] = useState(false);
   const [openImg, setOpenImg] = useState(false);
+  const [openSingleImg, setOpenSingleImg] = useState(false);
   const [imageToDelete, setImageToDelete] = useState(null);
 
   return (
@@ -127,6 +138,115 @@ const TextEditor = ({
           </Box>
         </Box>
         <Box>
+          {Object.hasOwn(data, "imageAm") && (
+            <Box>
+              <Box
+                sx={{ display: "flex", flexWrap: "wrap", gap: "10px", mb: 2 }}
+              >
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "10px",
+                  }}
+                >
+                  <Typography variant="h6">Image AM</Typography>
+                  <img
+                    src={data.imageAm}
+                    alt={data.imageAm}
+                    width={150}
+                    height={150}
+                  />
+                  <Button
+                    variant="outlined"
+                    pt={2}
+                    onClick={() => {
+                      setName("imageAm");
+                      setOpenSingleImg(true);
+                    }}
+                  >
+                    Edit Image
+                  </Button>
+                </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "10px",
+                  }}
+                >
+                  <Typography variant="h6">Image Ru</Typography>
+                  <img
+                    src={data.imageRu}
+                    alt={data.imageRu}
+                    width={150}
+                    height={150}
+                  />
+                  <Button
+                    variant="outlined"
+                    pt={2}
+                    onClick={() => {
+                      setName("imageRu");
+                      setOpenSingleImg(true);
+                    }}
+                  >
+                    Edit Image
+                  </Button>
+                </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "10px",
+                  }}
+                >
+                  <Typography variant="h6">Image En</Typography>
+                  <img
+                    src={data.imageEn}
+                    alt={data.imageEn}
+                    width={150}
+                    height={150}
+                  />
+                  <Button
+                    variant="outlined"
+                    pt={2}
+                    onClick={() => {
+                      setName("imageEn");
+                      setOpenSingleImg(true);
+                    }}
+                  >
+                    Edit Image
+                  </Button>
+                </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "10px",
+                  }}
+                >
+                  <Typography variant="h6">Image Ge</Typography>
+                  <img
+                    src={data.imageGe}
+                    alt={data.imageGe}
+                    width={150}
+                    height={150}
+                  />
+                  <Button
+                    variant="outlined"
+                    pt={2}
+                    onClick={() => {
+                      setName("imageGe");
+                      setOpenSingleImg(true);
+                    }}
+                  >
+                    Edit Image
+                  </Button>
+                </Box>
+              </Box>
+              <Typography variant="h5">Галерея</Typography>
+            </Box>
+          )}
           {images ? (
             <Box sx={{ display: "flex", flexWrap: "wrap", gap: "10px", mb: 2 }}>
               {data[images].map((i) => {
@@ -192,6 +312,12 @@ const TextEditor = ({
         open={openImg}
         handleClose={() => setOpenImg(false)}
         handleImageChange={handleImageChange}
+      />
+      <ImageModal
+        open={openSingleImg}
+        name={name}
+        handleClose={() => setOpenSingleImg(false)}
+        handleImageChange={handleSingleImageChange}
       />
     </Card>
   );

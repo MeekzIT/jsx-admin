@@ -3,7 +3,7 @@ import { createContext, useEffect, useState } from "react";
 
 const CloudinaryScriptContext = createContext();
 
-function CloudinaryUploadWidget({ uwConfig, handleUpload }) {
+function CloudinaryUploadWidget({ uwConfig, handleUpload, name }) {
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
@@ -30,7 +30,7 @@ function CloudinaryUploadWidget({ uwConfig, handleUpload }) {
         (error, result) => {
           if (!error && result && result.event === "success") {
             console.log("Done! Here is the image info: ", result.info);
-            handleUpload(result.info.url);
+            handleUpload(result.info.url, name);
           }
         }
       );

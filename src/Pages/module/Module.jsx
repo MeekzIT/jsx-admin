@@ -77,6 +77,15 @@ const ModulePage = () => {
   };
 
   // Handle image change for existing items
+  const handleSingleImageChange = (newValue, id, name) => {
+    setUpdatedData((prevData) =>
+      prevData.map((item) =>
+        item.id === id ? { ...item, [name]: newValue } : item
+      )
+    );
+  };
+
+  // Handle image change for existing items
   const handleImageChange = (newValue, id) => {
     const newData = { image: newValue, reletedId: id };
     setUpdatedData((prevData) =>
@@ -192,6 +201,9 @@ const ModulePage = () => {
             }
             handleDescriptionChange={(newValue, name) =>
               handleDescriptionChange(newValue, item.id, name)
+            }
+            handleSingleImageChange={(newValue, name) =>
+              handleSingleImageChange(newValue, item.id, name)
             }
             handleImageChange={(newValue) =>
               handleImageChange(newValue, item.id)

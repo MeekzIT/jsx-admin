@@ -5,7 +5,7 @@ import { themePallete } from "../..";
 import { useState } from "react";
 import CloudinaryUploadWidget from "../cloudinaryUploadWidget/CloudinaryUploadWidget";
 
-const ImageModal = ({ open, handleClose, handleImageChange }) => {
+const ImageModal = ({ open, handleClose, name, handleImageChange }) => {
   const isMobile = useIsMobile();
 
   const [cloudName] = useState("b2g");
@@ -42,6 +42,7 @@ const ImageModal = ({ open, handleClose, handleImageChange }) => {
         <Typography>You can upload new image</Typography>
         <CloudinaryUploadWidget
           uwConfig={uwConfig}
+          name={name}
           handleUpload={handleImageChange}
         />
       </Box>
