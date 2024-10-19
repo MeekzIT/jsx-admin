@@ -14,6 +14,7 @@ import {
   MODULE_PAGE,
   SELF_PAGE,
   SERVICES_PAGE,
+  SPARE_PAGE,
 } from "../../../routing/pats";
 import jsx from "./logos/jsx.png";
 import "./sidebar.css";
@@ -30,7 +31,8 @@ const Sidebar = ({ close, setClose }) => {
     { id: 4, path: MODULE_PAGE, name: "Модули" },
     { id: 5, path: EQUIPMENT_PAGE, name: "Доп. Оборудования" },
     { id: 6, path: BOARD_PAGE, name: "Печатные платы" },
-    { id: 7, path: CONSTRUCTOR_PAGE, name: "Cобери сам" },
+    { id: 7, path: SPARE_PAGE, name: "Запчасти" },
+    { id: 8, path: CONSTRUCTOR_PAGE, name: "Cобери сам" },
   ];
 
   const renderLogo = useMemo(() => {

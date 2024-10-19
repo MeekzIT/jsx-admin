@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  addData,
+  getData,
   deleteData,
   editData,
-  getData,
-} from "../../store/actions/constructor-action";
+  addData,
+  addImage,
+  deleteImage,
+} from "../../store/actions/spare-action";
 import { Box, Button, Typography } from "@mui/material";
-import AddModal from "../../components/modals/AddModal";
 import TextEditor from "../../components/editor/Editor";
-import ConstructorEditor from "../../components/editor/ConstructorEditor";
+import AddModal from "../../components/modals/AddModal";
 
 const defaultKeys = {
   titleAm: "",
@@ -22,19 +23,15 @@ const defaultKeys = {
   descGe: '[{"type":"paragraph","children":[{"text":""}]}]',
   image: "",
 };
-const ConstructorPage = () => {
+
+const SparePage = () => {
   const dispatch = useDispatch();
   const [add, setAdd] = useState(false);
   const [value, setValue] = useState(0);
   const [updatedData, setUpdatedData] = useState([]);
-  const [newService, setNewService] = useState(defaultKeys);
-  const data = useSelector((state) => state.construct.data);
+  const [newService, setNewService] = useState(defaultKeys); // State for new service
 
-  useEffect(() => {
-    dispatch(getData());
-  }, [dispatch]);
-
-  console.log(data, "getData");
+  const data = useSelector((state) => state.spare.data);
 
   // Fetch data on component mount
   useEffect(() => {
@@ -80,17 +77,40 @@ const ConstructorPage = () => {
   };
 
   // Handle image change for existing items
-  const handleImageChange = (newValue, currentID) => {
-    setUpdatedData((prevData) => {
-      return prevData.map((item) => {
-        if (item.id == currentID) {
-          return { ...item, image: newValue };
-        } else return item;
-      });
-    });
-    // dispatch(getData());
+  const handleImageChange = (newValue, id) => {
+    const newData = { image: newValue, reletedId: id };
+    setUpdatedData((prevData) =>
+      prevData.map((item) =>
+        item.id === id
+          ? {
+              ...item,
+              SpareImages: [...(item.SpareImages || []), newData],
+            }
+          : item
+      )
+    );
+    dispatch(addImage(newData));
+    dispatch(getData());
   };
 
+  const handleDeleteImage = (imageId, serviceId) => {
+    setUpdatedData((prevData) =>
+      prevData.map((item) =>
+        item.id === serviceId
+          ? {
+              ...item,
+              SpareImages: item.SpareImages.filter(
+                (image) => image.id !== imageId
+              ),
+            }
+          : item
+      )
+    );
+    dispatch(deleteImage({ id: imageId }));
+    dispatch(getData());
+  };
+
+  // Handle edit for existing items
   const handleEdit = (id) => {
     const itemToEdit = updatedData.find((item) => item.id === id);
     dispatch(editData(itemToEdit));
@@ -110,8 +130,12 @@ const ConstructorPage = () => {
   };
 
   // Handle new service title change
-  const handleNewTitleChange = (event) => {
-    handleNewServiceChange("title", event.target.value);
+  const handleNewTitleChange = (event, name) => {
+    console.log(name, event.target.value, "event.target.value");
+
+    name
+      ? handleNewServiceChange(event.target.name, event.target.value)
+      : handleNewServiceChange("title", event.target.value);
   };
 
   // Handle new service description change
@@ -135,7 +159,7 @@ const ConstructorPage = () => {
     <Box m={2}>
       <Box sx={{ display: "flex", gap: "20px", mb: 2 }}>
         <Typography variant="h4" gutterBottom>
-          Cобери сам
+          Запчасти
         </Typography>
         <Button variant="contained" onClick={() => setAdd(true)}>
           Add
@@ -147,11 +171,11 @@ const ConstructorPage = () => {
         handleClose={() => setAdd(false)}
         handleAdd={handleAddService}
       >
-        <ConstructorEditor
+        <TextEditor
           data={newService}
           value={value}
           handleChange={handleTabChange}
-          handleTitleChange={handleNewTitleChange}
+          handleTitleChange={(e) => handleNewTitleChange(e, true)}
           handleDescriptionChange={handleNewDescriptionChange}
           handleImageChange={handleNewImageChange}
         />
@@ -159,11 +183,11 @@ const ConstructorPage = () => {
 
       <Box sx={{ display: "flex", flexDirection: "column", gap: "20px" }}>
         {updatedData?.map((item) => (
-          <ConstructorEditor
+          <TextEditor
             key={item.id}
             data={item}
             value={value}
-            images="BoardImages"
+            images="SpareImages"
             handleChange={handleTabChange}
             handleTitleChange={(event) =>
               handleTitleChange(event, item.id, true)
@@ -172,8 +196,9 @@ const ConstructorPage = () => {
               handleDescriptionChange(newValue, item.id, name)
             }
             handleImageChange={(newValue) =>
-              handleImageChange(newValue, Number(item.id))
+              handleImageChange(newValue, item.id)
             }
+            handleDeleteImage={(imageId) => handleDeleteImage(imageId, item.id)}
             handleEdit={() => handleEdit(item.id)}
             handleDelete={() => handleDelete(item.id)}
           />
@@ -183,4 +208,4 @@ const ConstructorPage = () => {
   );
 };
 
-export default ConstructorPage;
+export default SparePage;

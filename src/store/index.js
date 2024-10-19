@@ -7,6 +7,8 @@ import { selfReducer } from "./reducers/self-reducer";
 import { moduleReducer } from "./reducers/mudule-reducer";
 import { equipmentReducer } from "./reducers/equipment-reducer";
 import { boardReducer } from "./reducers/board-reducer";
+import { spareReducer } from "./reducers/spare-reducer";
+import { constructorReducer } from "./reducers/constructor-reducer";
 
 const rootReducer = combineReducers({
   auth: isAuthReducer,
@@ -15,6 +17,8 @@ const rootReducer = combineReducers({
   module: moduleReducer,
   equipment: equipmentReducer,
   board: boardReducer,
+  spare: spareReducer,
+  construct: constructorReducer,
 });
 
 export const store = createStore(rootReducer, applyMiddleware(thunk));

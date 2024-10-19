@@ -6,3 +6,4 @@ export const MODULE_PAGE = "/modules";
 export const EQUIPMENT_PAGE = "/equipment";
 export const CONSTRUCTOR_PAGE = "/constructor";
 export const BOARD_PAGE = "/board";
+export const SPARE_PAGE = "/spare";
