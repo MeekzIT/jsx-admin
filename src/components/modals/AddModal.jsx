@@ -13,6 +13,7 @@ const AddModal = ({ open, handleClose, handleAdd, children }) => {
     left: "50%",
     transform: "translate(-50%, -50%)",
     width: isMobile ? "100%" : 1000,
+    height: "70vh",
     bgcolor: "background.paper",
     border: `3px solid ${themePallete}`,
     boxShadow: 24,
@@ -24,12 +25,12 @@ const AddModal = ({ open, handleClose, handleAdd, children }) => {
     alignItems: isMobile && "center",
     flexDirection: isMobile && "column",
     gap: isMobile && "20px",
+    overflowY: "scroll",
   };
 
   return (
     <Modal open={open} onClose={handleClose}>
       <Box sx={style}>
-        <Typography>Add New Item</Typography>
         {children}
         <div>
           <Button

@@ -1,5 +1,6 @@
 import {
   BOARD_PAGE,
+  CONSTRUCTOR__DETAIL_PAGE,
   CONSTRUCTOR_PAGE,
   EQUIPMENT_PAGE,
   HOME_PAGE,
@@ -18,6 +19,7 @@ import EquipmentPage from "../Pages/equipment/Equipment";
 import ConstructorPage from "../Pages/constructor/Constructor";
 import BoardPage from "../Pages/board/Board";
 import SparePage from "../Pages/spare/Spare";
+import Detail from "../Pages/constructor/Detail";
 
 export const isAuthPages = [
   { id: 1, path: HOME_PAGE, Component: <HomePage /> },
@@ -28,6 +30,7 @@ export const isAuthPages = [
   { id: 6, path: BOARD_PAGE, Component: <BoardPage /> },
   { id: 7, path: SPARE_PAGE, Component: <SparePage /> },
   { id: 8, path: CONSTRUCTOR_PAGE, Component: <ConstructorPage /> },
+  { id: 9, path: CONSTRUCTOR__DETAIL_PAGE, Component: <Detail /> },
 ];
 
 export const notAuthPages = [{ id: 2, path: LOGIN_PAGE, Component: LoginPage }];

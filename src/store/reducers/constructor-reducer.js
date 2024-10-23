@@ -1,13 +1,26 @@
-import { ADD_CONSTRUCTOR, DELETE_CONSTRUCTOR, EDIT_CONSTRUCTOR, GET_CONSTRUCTOR } from "../types";
+import {
+  ADD_CONSTRUCTOR,
+  DELETE_CONSTRUCTOR,
+  EDIT_CONSTRUCTOR,
+  GET_CONSTRUCTOR,
+  GET_SINGLE_CONSTRUCTOR,
+  GET_SINGLE_CONSTRUCTOR_ITEM,
+} from "../types";
 
 const initialState = {
   data: null,
+  single: null,
+  service: null,
 };
 
 export const constructorReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_CONSTRUCTOR:
       return { ...state, data: action.payload };
+    case GET_SINGLE_CONSTRUCTOR:
+      return { ...state, single: action.payload };
+    case GET_SINGLE_CONSTRUCTOR_ITEM:
+      return { ...state, service: action.payload };
     case ADD_CONSTRUCTOR:
       return {
         ...state,
@@ -27,6 +40,7 @@ export const constructorReducer = (state = initialState, action) => {
             : service
         ),
       };
+
     default:
       return state;
   }
