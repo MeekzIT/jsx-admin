@@ -9,6 +9,8 @@ import { equipmentReducer } from "./reducers/equipment-reducer";
 import { boardReducer } from "./reducers/board-reducer";
 import { spareReducer } from "./reducers/spare-reducer";
 import { constructorReducer } from "./reducers/constructor-reducer";
+import { contactsReducer } from "./reducers/contacts-reducer";
+import { orderReducer } from "./reducers/order-reducer";
 
 const rootReducer = combineReducers({
   auth: isAuthReducer,
@@ -19,6 +21,8 @@ const rootReducer = combineReducers({
   board: boardReducer,
   spare: spareReducer,
   construct: constructorReducer,
+  contacts: contactsReducer,
+  orders: orderReducer,
 });
 
 export const store = createStore(rootReducer, applyMiddleware(thunk));

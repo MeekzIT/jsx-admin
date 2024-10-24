@@ -20,7 +20,6 @@ const defaultKeys = {
   descEn: '[{"type":"paragraph","children":[{"text":""}]}]',
   descGe: '[{"type":"paragraph","children":[{"text":""}]}]',
   image: "",
-  
 };
 const ConstructorPage = () => {
   const dispatch = useDispatch();
@@ -85,6 +84,17 @@ const ConstructorPage = () => {
       return prevData.map((item) => {
         if (item.id == currentID) {
           return { ...item, image: newValue };
+        } else return item;
+      });
+    });
+    // dispatch(getData());
+  };
+
+  const handleDeleteImage = (currentID) => {
+    setUpdatedData((prevData) => {
+      return prevData.map((item) => {
+        if (item.id == currentID) {
+          return { ...item, image: null };
         } else return item;
       });
     });
@@ -175,6 +185,7 @@ const ConstructorPage = () => {
             handleImageChange={(newValue) =>
               handleImageChange(newValue, Number(item.id))
             }
+            handleDeleteImage={() => handleDeleteImage(Number(item.id))}
             handleEdit={() => handleEdit(item.id)}
             handleDelete={() => handleDelete(item.id)}
           />

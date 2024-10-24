@@ -10,11 +10,13 @@ const ConstructorEditor = ({
   data,
   handleTitleChange,
   handleImageChange,
+  handleDeleteImage,
   handleEdit,
   handleDelete,
 }) => {
   const dispatch = useDispatch();
   const [openDel, setOpenDel] = useState(false);
+  const [openDelImage, setOpenDelImage] = useState(false);
   const [openImg, setOpenImg] = useState(false);
   const [items, setItems] = useState(data.ConstuctorItems);
   const handleOnDragEnd = (result) => {
@@ -71,6 +73,16 @@ const ConstructorEditor = ({
           <Button variant="outlined" pt={2} onClick={() => setOpenImg(true)}>
             {data.image ? "Edit" : "Add"} Image
           </Button>
+          {data.image && (
+            <Button
+              variant="outlined"
+              pt={2}
+              ml={2}
+              onClick={() => setOpenDelImage(true)}
+            >
+              Delete Image
+            </Button>
+          )}
         </Box>
       </Box>
       <Box sx={{ padding: "20px", display: "flex", gap: "20px" }}>
@@ -149,6 +161,11 @@ const ConstructorEditor = ({
         open={openDel}
         handleClose={() => setOpenDel(false)}
         handleDelete={handleDelete}
+      />
+      <DeleteModal
+        open={openDelImage}
+        handleClose={() => setOpenDelImage(false)}
+        handleDelete={handleDeleteImage}
       />
       <ImageModal
         open={openImg}

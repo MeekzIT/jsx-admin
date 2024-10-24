@@ -9,9 +9,11 @@ import { useIsMobile } from "../../../hooks/useScreenType";
 import {
   BOARD_PAGE,
   CONSTRUCTOR_PAGE,
+  CONTACT_PAGE,
   EQUIPMENT_PAGE,
   HOME_PAGE,
   MODULE_PAGE,
+  ORDER_PAGE,
   SELF_PAGE,
   SERVICES_PAGE,
   SPARE_PAGE,
@@ -26,6 +28,8 @@ const Sidebar = ({ close, setClose }) => {
 
   const superPages = [
     { id: 1, path: HOME_PAGE, name: "Главная" },
+    { id: 10, path: ORDER_PAGE, name: "Заказы" },
+    { id: 9, path: CONTACT_PAGE, name: "Связаться с нами" },
     { id: 2, path: SERVICES_PAGE, name: "Услуги" },
     { id: 3, path: SELF_PAGE, name: "Мойки Самообслуживания" },
     { id: 4, path: MODULE_PAGE, name: "Модули" },

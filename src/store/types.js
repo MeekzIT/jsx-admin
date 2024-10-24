@@ -53,3 +53,6 @@ export const ADD_NEW_ITEM = "ADD_NEW_ITEM";
 export const ADD_OPTION = "ADD_OPTION";
 export const EDIT_OPTION = "EDIT_OPTION";
 export const DELETE_OPTION = "DELETE_OPTION";
+
+export const GET_CONTACTS = "GET_CONTACTS";
+export const GET_ORDERS = "GET_ORDERS";
