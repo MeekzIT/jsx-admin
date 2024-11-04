@@ -36,7 +36,7 @@ const AddModal = ({ open, handleClose, handleAdd, children }) => {
           <Button
             variant="outlined"
             onClick={() => {
-              dispatch(handleAdd());
+              handleAdd();
               handleClose();
             }}
           >

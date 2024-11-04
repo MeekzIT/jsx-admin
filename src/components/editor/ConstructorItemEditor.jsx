@@ -126,7 +126,6 @@ const ConstructorItemEditor = ({
     );
   };
 
-
   const handleImageChange = (newValue, currentID) => {
     setUpdatedData((prevData) => {
       return prevData.map((item) => {
@@ -222,11 +221,10 @@ const ConstructorItemEditor = ({
   };
 
   const handleAddService = () => {
-    dispatch(addOption({ ...newService, itemId: data.id })); // Dispatch add action
-    setAdd(false); // Close the modal
+    addOption({ ...newService, itemId: data.id });
+    setAdd(false);
     setNewService(defaultKeys); // Reset the form
   };
-  console.log(updatedData, "xxx");
 
   return (
     <Card

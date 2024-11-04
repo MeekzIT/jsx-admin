@@ -3,6 +3,7 @@ import Swal from "sweetalert2";
 import { keys } from "../../keys";
 import {
   ADD_CONSTRUCTOR,
+  ADD_OPTION,
   DELETE_CONSTRUCTOR,
   DND_ITEMS,
   EDIT_CONSTRUCTOR,
@@ -326,36 +327,34 @@ export const destroyItem = (data) => {
 //------
 
 export const addOption = (data) => {
-  return (dispatch) => {
-    axios
-      .post(`${keys.api}/constuctor/option`, data, {
-        headers: {
-          Authorization: `Bearer ${keys.token}`,
-        },
-      })
-      .then(function (response) {
-        if (response.data.succes) {
-          Swal.fire({
-            position: "center",
-            iconColor: "#008491",
-            icon: "success",
-            showConfirmButton: false,
-            timer: 1500,
-          });
-        } else
-          Swal.fire({
-            position: "center",
-            iconColor: "#008491",
-            icon: "error",
-            showConfirmButton: false,
-            timer: 1500,
-            title: "Неправильные Данные",
-          });
-      })
-      .catch(function (error) {
-        console.error(error);
-      });
-  };
+  axios
+    .post(`${keys.api}/constuctor/option`, data, {
+      headers: {
+        Authorization: `Bearer ${keys.token}`,
+      },
+    })
+    .then(function (response) {
+      if (response.data.succes) {
+        Swal.fire({
+          position: "center",
+          iconColor: "#008491",
+          icon: "success",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      } else
+        Swal.fire({
+          position: "center",
+          iconColor: "#008491",
+          icon: "error",
+          showConfirmButton: false,
+          timer: 1500,
+          title: "Неправильные Данные",
+        });
+    })
+    .catch(function (error) {
+      console.error(error);
+    });
 };
 
 export const editOption = (data) => {
@@ -524,8 +523,6 @@ export const destroySubItem = (data) => {
       });
   };
 };
-
-
 
 // ----
 

@@ -1,5 +1,6 @@
 import {
   ADD_CONSTRUCTOR,
+  ADD_OPTION,
   DELETE_CONSTRUCTOR,
   EDIT_CONSTRUCTOR,
   GET_CONSTRUCTOR,
@@ -31,6 +32,9 @@ export const constructorReducer = (state = initialState, action) => {
         ...state,
         data: state.data.filter((service) => service.id !== action.payload.id),
       };
+    case ADD_OPTION:
+      console.log(action.payload, state.single, "999");
+      return;
     case EDIT_CONSTRUCTOR:
       return {
         ...state,
