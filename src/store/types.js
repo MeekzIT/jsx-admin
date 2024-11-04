@@ -64,3 +64,8 @@ export const ADD_GALLERY = "ADD_GALLERY";
 export const DEL_GALLERY = "DEL_GALLERY";
 export const GET_GALLERY = "GET_GALLERY";
 export const EDIT_GALLERY = "EDIT_GALLERY";
+
+export const ADD_PARTNERS = "ADD_PARTNERS";
+export const DEL_PARTNERS = "DEL_PARTNERS";
+export const GET_PARTNERS = "GET_PARTNERS";
+export const EDIT_PARTNERS = "EDIT_PARTNERS";

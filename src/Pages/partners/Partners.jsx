@@ -15,13 +15,13 @@ import {
   editData,
   deleteData,
   addData,
-} from "../../store/actions/gallery-action";
+} from "../../store/actions/partners-action";
 import DeleteModal from "../../components/modals/DeleteModal";
 import ImageModal from "../../components/modals/ImageModal";
 import AddModal from "../../components/modals/AddModal";
 import CloudinaryUploadWidget from "../../components/cloudinaryUploadWidget/CloudinaryUploadWidget";
 
-const Gallery = () => {
+const Partners = () => {
   const dispatch = useDispatch();
   const [add, setAdd] = useState(false);
   const [del, setDel] = useState(false);
@@ -30,11 +30,9 @@ const Gallery = () => {
   const [editValues, setEditValues] = useState({});
   const [isEditing, setIsEditing] = useState({});
   const [newItem, setNewItem] = useState({
-    width: "",
-    height: "",
-    src: "",
+    image: "",
   });
-  const data = useSelector((state) => state.gallery.data);
+  const data = useSelector((state) => state.partners.data);
   const [cloudName] = useState("b2g");
   const [uploadPreset] = useState("luyk0lcb");
   const [uwConfig] = useState({
@@ -50,7 +48,7 @@ const Gallery = () => {
   // Update local editValues when data changes
   useEffect(() => {
     const initialEditValues = data.reduce((acc, item) => {
-      acc[item.id] = { width: item.width, height: item.height, src: item.src };
+      acc[item.id] = { image: item.image };
       return acc;
     }, {});
     setEditValues(initialEditValues);
@@ -58,7 +56,7 @@ const Gallery = () => {
   const addNewImage = (src) => {
     return handleChange({
       target: {
-        name: "src",
+        name: "image",
         value: src,
       },
     });
@@ -79,7 +77,7 @@ const Gallery = () => {
 
   const handleAddService = () => {
     dispatch(addData(newItem));
-    setNewItem({ width: "", height: "", src: "" });
+    setNewItem({ image: "" });
     setOpenImg(false);
   };
 
@@ -91,16 +89,16 @@ const Gallery = () => {
   const handleImageChange = (url) => {
     setEditValues((prev) => ({
       ...prev,
-      [current]: { ...prev[current], src: url },
+      [current]: { ...prev[current], image: url },
     }));
-    dispatch(editData({ id: current, src: url })); // Update the image in the Redux store
+    dispatch(editData({ id: current, image: url }));
   };
 
   return (
     <Box>
       <Box sx={{ display: "flex", gap: "20px", mb: 2 }}>
         <Typography variant="h4" gutterBottom>
-          Галерея
+          Партнеры
         </Typography>
         <Button variant="contained" onClick={() => setAdd(true)}>
           Add
@@ -111,8 +109,8 @@ const Gallery = () => {
           <Card sx={{ maxWidth: 345 }} key={i.id}>
             <CardMedia
               sx={{ height: 140 }}
-              image={editValues[i.id]?.src || i.src}
-              title={i.src}
+              image={editValues[i.id]?.image || i.image}
+              title={i.image}
             />
             <CardContent>
               <Box>
@@ -127,32 +125,6 @@ const Gallery = () => {
                   Edit Image
                 </Button>
               </Box>
-              <TextField
-                label="Width"
-                variant="outlined"
-                value={editValues[i.id]?.width || ""}
-                onChange={(e) =>
-                  setEditValues((prev) => ({
-                    ...prev,
-                    [i.id]: { ...prev[i.id], width: e.target.value },
-                  }))
-                }
-                sx={{ mt: 2 }}
-                disabled={!isEditing[i.id]}
-              />
-              <TextField
-                label="Height"
-                variant="outlined"
-                value={editValues[i.id]?.height || ""}
-                onChange={(e) =>
-                  setEditValues((prev) => ({
-                    ...prev,
-                    [i.id]: { ...prev[i.id], height: e.target.value },
-                  }))
-                }
-                disabled={!isEditing[i.id]}
-                sx={{ mt: 2 }}
-              />
             </CardContent>
             <CardActions>
               {isEditing[i.id] ? (
@@ -196,25 +168,7 @@ const Gallery = () => {
         <Typography variant="h6" gutterBottom>
           Add New Item
         </Typography>
-        <TextField
-          label="Width"
-          name="width"
-          fullWidth
-          variant="outlined"
-          value={newItem.width}
-          onChange={handleChange}
-          sx={{ mb: 2 }}
-        />
-        <TextField
-          label="Height"
-          name="height"
-          fullWidth
-          variant="outlined"
-          value={newItem.height}
-          onChange={handleChange}
-          sx={{ mb: 2 }}
-        />
-        {newItem.src && <img src={newItem.src} alt="newIMage" />}
+        {newItem.image && <img src={newItem.image} alt="newIMage" />}
         <CloudinaryUploadWidget
           uwConfig={uwConfig}
           name={"url"}
@@ -225,4 +179,4 @@ const Gallery = () => {
   );
 };
 
-export default Gallery;
+export default Partners;

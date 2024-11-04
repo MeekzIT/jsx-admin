@@ -10,6 +10,7 @@ import {
   LOGIN_PAGE,
   MODULE_PAGE,
   ORDER_PAGE,
+  PARTNERS_PAGE,
   SELF_PAGE,
   SERVICES_PAGE,
   SPARE_PAGE,
@@ -28,6 +29,7 @@ import Contacts from "../Pages/contacts/Contacts";
 import Orders from "../Pages/orders/Orders";
 import AboutPage from "../Pages/about/About";
 import Gallery from "../Pages/gallery/Gallery";
+import Partners from "../Pages/partners/Partners";
 
 export const isAuthPages = [
   { id: 1, path: HOME_PAGE, Component: <HomePage /> },
@@ -43,6 +45,7 @@ export const isAuthPages = [
   { id: 11, path: ORDER_PAGE, Component: <Orders /> },
   { id: 12, path: ABOUT_PAGE, Component: <AboutPage /> },
   { id: 13, path: GALLERY_PAGE, Component: <Gallery /> },
+  { id: 14, path: PARTNERS_PAGE, Component: <Partners /> },
 ];
 
 export const notAuthPages = [{ id: 2, path: LOGIN_PAGE, Component: LoginPage }];

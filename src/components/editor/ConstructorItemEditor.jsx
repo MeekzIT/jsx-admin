@@ -72,7 +72,7 @@ const ConstructorItemEditor = ({
   const [checked, setChecked] = useState(data.require);
   const [updatedData, setUpdatedData] = useState([]);
   const [newService, setNewService] = useState(defaultKeys);
-  const [option, setOption] = useState(data.id);
+  const [option, setOption] = useState(0);
   const [serviceTab, setServiceTab] = useState(0);
   const service = useSelector((state) => state.construct.service);
   const handleTabChange = (event, newValue) => {

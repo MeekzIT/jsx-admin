@@ -72,7 +72,7 @@ const ConstructorItemSubEditor = ({
   const [updatedData, setUpdatedData] = useState([]);
   const [newService, setNewService] = useState(defaultKeys);
   // const [newServiceSubItem, setNewServiceSub] = useState(defaultKeysSub);
-  const [option, setOption] = useState(data.id);
+  const [option, setOption] = useState(0);
   const [serviceTab, setServiceTab] = useState(0);
   const service = useSelector((state) => state.construct.service);
   const handleTabChange = (event, newValue) => {

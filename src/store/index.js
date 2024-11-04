@@ -13,6 +13,7 @@ import { contactsReducer } from "./reducers/contacts-reducer";
 import { orderReducer } from "./reducers/order-reducer";
 import { aboutReducer } from "./reducers/about-reducer";
 import { galleryReducer } from "./reducers/gallery-reducer";
+import { partnersReducer } from "./reducers/partners-reducer";
 
 const rootReducer = combineReducers({
   auth: isAuthReducer,
@@ -27,6 +28,7 @@ const rootReducer = combineReducers({
   orders: orderReducer,
   about: aboutReducer,
   gallery: galleryReducer,
+  partners: partnersReducer,
 });
 
 export const store = createStore(rootReducer, applyMiddleware(thunk));

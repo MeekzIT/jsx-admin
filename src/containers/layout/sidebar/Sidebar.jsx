@@ -16,6 +16,7 @@ import {
   HOME_PAGE,
   MODULE_PAGE,
   ORDER_PAGE,
+  PARTNERS_PAGE,
   SELF_PAGE,
   SERVICES_PAGE,
   SPARE_PAGE,
@@ -41,6 +42,7 @@ const Sidebar = ({ close, setClose }) => {
     { id: 7, path: SPARE_PAGE, name: "Запчасти" },
     { id: 8, path: CONSTRUCTOR_PAGE, name: "Cобери сам" },
     { id: 12, path: GALLERY_PAGE, name: "Галерея" },
+    { id: 13, path: PARTNERS_PAGE, name: "Партнеры" },
   ];
 
   const renderLogo = useMemo(() => {
