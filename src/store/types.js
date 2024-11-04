@@ -56,3 +56,11 @@ export const DELETE_OPTION = "DELETE_OPTION";
 
 export const GET_CONTACTS = "GET_CONTACTS";
 export const GET_ORDERS = "GET_ORDERS";
+
+export const GET_ABOUT = "GET_ABOUT";
+export const EDIT_ABOUT = "EDIT_ABOUT";
+
+export const ADD_GALLERY = "ADD_GALLERY";
+export const DEL_GALLERY = "DEL_GALLERY";
+export const GET_GALLERY = "GET_GALLERY";
+export const EDIT_GALLERY = "EDIT_GALLERY";

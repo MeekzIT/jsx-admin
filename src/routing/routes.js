@@ -1,9 +1,11 @@
 import {
+  ABOUT_PAGE,
   BOARD_PAGE,
   CONSTRUCTOR__DETAIL_PAGE,
   CONSTRUCTOR_PAGE,
   CONTACT_PAGE,
   EQUIPMENT_PAGE,
+  GALLERY_PAGE,
   HOME_PAGE,
   LOGIN_PAGE,
   MODULE_PAGE,
@@ -24,6 +26,8 @@ import SparePage from "../Pages/spare/Spare";
 import Detail from "../Pages/constructor/Detail";
 import Contacts from "../Pages/contacts/Contacts";
 import Orders from "../Pages/orders/Orders";
+import AboutPage from "../Pages/about/About";
+import Gallery from "../Pages/gallery/Gallery";
 
 export const isAuthPages = [
   { id: 1, path: HOME_PAGE, Component: <HomePage /> },
@@ -37,6 +41,8 @@ export const isAuthPages = [
   { id: 9, path: CONSTRUCTOR__DETAIL_PAGE, Component: <Detail /> },
   { id: 10, path: CONTACT_PAGE, Component: <Contacts /> },
   { id: 11, path: ORDER_PAGE, Component: <Orders /> },
+  { id: 12, path: ABOUT_PAGE, Component: <AboutPage /> },
+  { id: 13, path: GALLERY_PAGE, Component: <Gallery /> },
 ];
 
 export const notAuthPages = [{ id: 2, path: LOGIN_PAGE, Component: LoginPage }];

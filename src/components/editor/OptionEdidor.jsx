@@ -70,6 +70,8 @@ const OptionEdidor = ({
   handleImageChange,
   handleImageDelte,
   handleNewPriceChange,
+  handleWidthChange,
+  handleHeightChange,
   handleEdit,
   handleDelete,
 }) => {
@@ -237,6 +239,20 @@ const OptionEdidor = ({
                 name="price"
                 value={data.price}
                 onChange={handleNewPriceChange}
+              />
+              <TextField
+                label="Width"
+                variant="outlined"
+                name="width"
+                value={data.width}
+                onChange={handleWidthChange}
+              />
+              <TextField
+                label="Height"
+                variant="outlined"
+                name="height"
+                value={data.height}
+                onChange={handleHeightChange}
               />
               <Box sx={{ mt: 3 }}>
                 <Typography variant="h6" gutterBottom>

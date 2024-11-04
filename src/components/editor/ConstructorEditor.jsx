@@ -13,6 +13,8 @@ const ConstructorEditor = ({
   handleDeleteImage,
   handleEdit,
   handleDelete,
+  handleWidthChange,
+  handleHeightChange,
 }) => {
   const dispatch = useDispatch();
   const [openDel, setOpenDel] = useState(false);
@@ -66,10 +68,29 @@ const ConstructorEditor = ({
               value={data.nameGe}
               onChange={handleTitleChange}
             />
+            <TextField
+              label="Width"
+              variant="outlined"
+              name="width"
+              value={data.width}
+              onChange={handleWidthChange}
+            />
+            <TextField
+              label="Height"
+              variant="outlined"
+              name="height"
+              value={data.height}
+              onChange={handleHeightChange}
+            />
           </Box>
         </Box>
         <Box>
-          <img src={data.image} alt="Preview" className="img_preview" />
+          <img
+            src={data.image}
+            alt="Preview"
+            width={data.width}
+            height={data.height}
+          />
           <Button variant="outlined" pt={2} onClick={() => setOpenImg(true)}>
             {data.image ? "Edit" : "Add"} Image
           </Button>

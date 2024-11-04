@@ -78,6 +78,22 @@ const ConstructorPage = () => {
     );
   };
 
+  const handleOptionWidthChange = (newValue, id) => {
+    setUpdatedData((prevData) =>
+      prevData.map((item) =>
+        item.id === id ? { ...item, width: newValue } : item
+      )
+    );
+  };
+
+  const handleOptionHeightChange = (newValue, id) => {
+    setUpdatedData((prevData) =>
+      prevData.map((item) =>
+        item.id === id ? { ...item, height: newValue } : item
+      )
+    );
+  };
+
   // Handle image change for existing items
   const handleImageChange = (newValue, currentID) => {
     setUpdatedData((prevData) => {
@@ -129,6 +145,14 @@ const ConstructorPage = () => {
     handleNewServiceChange(name, JSON.stringify(newValue));
   };
 
+  const handleNewWidthChange = (event) => {
+    handleNewServiceChange("width", event.target.value);
+  };
+
+  const handleNewHeightChange = (event) => {
+    handleNewServiceChange("height", event.target.value);
+  };
+
   // Handle new service image change
   const handleNewImageChange = (newValue) => {
     handleNewServiceChange("image", newValue);
@@ -165,6 +189,8 @@ const ConstructorPage = () => {
           handleTitleChange={handleNewTitleChange}
           handleDescriptionChange={handleNewDescriptionChange}
           handleImageChange={handleNewImageChange}
+          handleWidthChange={handleNewWidthChange}
+          handleHeightChange={handleNewHeightChange}
         />
       </AddModal>
 
@@ -184,6 +210,12 @@ const ConstructorPage = () => {
             }
             handleImageChange={(newValue) =>
               handleImageChange(newValue, Number(item.id))
+            }
+            handleWidthChange={(e) =>
+              handleOptionWidthChange(e.target.value, item.id)
+            }
+            handleHeightChange={(e) =>
+              handleOptionHeightChange(e.target.value, item.id)
             }
             handleDeleteImage={() => handleDeleteImage(Number(item.id))}
             handleEdit={() => handleEdit(item.id)}

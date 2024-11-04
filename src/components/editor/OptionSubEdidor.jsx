@@ -48,6 +48,8 @@ const OptionSubEdidor = ({
   handleImageDelte,
   handleEdit,
   handleDelete,
+  handleWidthChange,
+  handleHeightChange,
 }) => {
   const [openDel, setOpenDel] = useState(false);
   const [openImg, setOpenImg] = useState(false);
@@ -110,11 +112,25 @@ const OptionSubEdidor = ({
                 onChange={handleTitleChange}
               />
               <TextField
-                label="Ge"
+                label="Price"
                 variant="outlined"
                 name="price"
                 value={data.price}
                 onChange={handleNewPriceChange}
+              />
+              <TextField
+                label="Width"
+                variant="outlined"
+                name="width"
+                value={data.width}
+                onChange={handleWidthChange}
+              />
+              <TextField
+                label="Height"
+                variant="outlined"
+                name="height"
+                value={data.height}
+                onChange={handleHeightChange}
               />
               <Box sx={{ mt: 3 }}>
                 <Typography variant="h6" gutterBottom>

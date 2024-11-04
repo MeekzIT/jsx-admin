@@ -138,6 +138,22 @@ const ConstructorItemSubEditor = ({
     );
   };
 
+  const handleOptionWidthChange = (newValue, id) => {
+    setUpdatedData((prevData) =>
+      prevData.map((item) =>
+        item.id === id ? { ...item, width: newValue } : item
+      )
+    );
+  };
+
+  const handleOptionHeightChange = (newValue, id) => {
+    setUpdatedData((prevData) =>
+      prevData.map((item) =>
+        item.id === id ? { ...item, height: newValue } : item
+      )
+    );
+  };
+
   const handleImageChange = (newValue, currentID) => {
     setUpdatedData((prevData) => {
       return prevData.map((item) => {
@@ -201,6 +217,14 @@ const ConstructorItemSubEditor = ({
 
   const handleNewPriceChange = (event) => {
     handleNewServiceChange(event.target.name, event.target.value);
+  };
+
+  const handleNewWidthChange = (event) => {
+    handleNewServiceChange("width", event.target.value);
+  };
+
+  const handleNewHeightChange = (event) => {
+    handleNewServiceChange("height", event.target.value);
   };
 
   // Handle adding a new service
@@ -342,6 +366,8 @@ const ConstructorItemSubEditor = ({
                   handleImageInConstructor={handleNewConstructorImageChange}
                   handleTitleChange={handleNewTitleChange}
                   handleDescriptionChange={handleNewDescriptionChange}
+                  handleWidthChange={handleNewWidthChange}
+                  handleHeightChange={handleNewHeightChange}
                 />
               </AddModal>
               {data?.ConstuctorItemOptionItemOptions?.length ? (
@@ -387,6 +413,12 @@ const ConstructorItemSubEditor = ({
                               }
                               handleNewPriceChange={(e) =>
                                 handleOptionPriceChange(e.target.value, i.id)
+                              }
+                              handleWidthChange={(e) =>
+                                handleOptionWidthChange(e.target.value, i.id)
+                              }
+                              handleHeightChange={(e) =>
+                                handleOptionHeightChange(e.target.value, i.id)
                               }
                               handleImageDelte={() => {
                                 handleImageDelte(i.id);

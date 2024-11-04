@@ -7,10 +7,12 @@ import { Link, useLocation } from "react-router-dom";
 import { themePallete } from "../../..";
 import { useIsMobile } from "../../../hooks/useScreenType";
 import {
+  ABOUT_PAGE,
   BOARD_PAGE,
   CONSTRUCTOR_PAGE,
   CONTACT_PAGE,
   EQUIPMENT_PAGE,
+  GALLERY_PAGE,
   HOME_PAGE,
   MODULE_PAGE,
   ORDER_PAGE,
@@ -28,6 +30,7 @@ const Sidebar = ({ close, setClose }) => {
 
   const superPages = [
     { id: 1, path: HOME_PAGE, name: "Главная" },
+    { id: 11, path: ABOUT_PAGE, name: "О нас" },
     { id: 10, path: ORDER_PAGE, name: "Заказы" },
     { id: 9, path: CONTACT_PAGE, name: "Связаться с нами" },
     { id: 2, path: SERVICES_PAGE, name: "Услуги" },
@@ -37,6 +40,7 @@ const Sidebar = ({ close, setClose }) => {
     { id: 6, path: BOARD_PAGE, name: "Печатные платы" },
     { id: 7, path: SPARE_PAGE, name: "Запчасти" },
     { id: 8, path: CONSTRUCTOR_PAGE, name: "Cобери сам" },
+    { id: 12, path: GALLERY_PAGE, name: "Галерея" },
   ];
 
   const renderLogo = useMemo(() => {

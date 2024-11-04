@@ -126,9 +126,8 @@ const ConstructorItemEditor = ({
     );
   };
 
-  const handleImageChange = (newValue, currentID) => {
-    console.log(newValue, currentID, "iii");
 
+  const handleImageChange = (newValue, currentID) => {
     setUpdatedData((prevData) => {
       return prevData.map((item) => {
         if (item.id == currentID) {
@@ -183,12 +182,35 @@ const ConstructorItemEditor = ({
     );
   };
 
+  const handleOptionWidthChange = (newValue, id) => {
+    setUpdatedData((prevData) =>
+      prevData.map((item) =>
+        item.id === id ? { ...item, width: newValue } : item
+      )
+    );
+  };
+
+  const handleOptionHeightChange = (newValue, id) => {
+    setUpdatedData((prevData) =>
+      prevData.map((item) =>
+        item.id === id ? { ...item, height: newValue } : item
+      )
+    );
+  };
   const handleNewTitleChange = (event) => {
     handleNewServiceChange(event.target.name, event.target.value);
   };
 
   const handleNewPriceChange = (event) => {
     handleNewServiceChange(event.target.name, event.target.value);
+  };
+
+  const handleNewWidthChange = (event) => {
+    handleNewServiceChange("width", event.target.value);
+  };
+
+  const handleNewHeightChange = (event) => {
+    handleNewServiceChange("height", event.target.value);
   };
 
   const handleNewImageChange = (newValue) => {
@@ -337,6 +359,8 @@ const ConstructorItemEditor = ({
                   handleImageInConstructor={handleNewConstructorImageChange}
                   handleDescriptionChange={handleNewDescriptionChange}
                   handleImageChange={handleNewImageChange}
+                  handleWidthChange={handleNewWidthChange}
+                  handleHeightChange={handleNewHeightChange}
                 />
               </AddModal>
               {data?.ConstuctorItemOptions?.length ? (
@@ -369,6 +393,12 @@ const ConstructorItemEditor = ({
                               }
                               handleNewPriceChange={(e) =>
                                 handleOptionPriceChange(e.target.value, i.id)
+                              }
+                              handleWidthChange={(e) =>
+                                handleOptionWidthChange(e.target.value, i.id)
+                              }
+                              handleHeightChange={(e) =>
+                                handleOptionHeightChange(e.target.value, i.id)
                               }
                               handleImageInConstructor={(event) =>
                                 handleConstructorImageChange(

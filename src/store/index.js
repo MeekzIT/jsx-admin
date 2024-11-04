@@ -11,6 +11,8 @@ import { spareReducer } from "./reducers/spare-reducer";
 import { constructorReducer } from "./reducers/constructor-reducer";
 import { contactsReducer } from "./reducers/contacts-reducer";
 import { orderReducer } from "./reducers/order-reducer";
+import { aboutReducer } from "./reducers/about-reducer";
+import { galleryReducer } from "./reducers/gallery-reducer";
 
 const rootReducer = combineReducers({
   auth: isAuthReducer,
@@ -23,6 +25,8 @@ const rootReducer = combineReducers({
   construct: constructorReducer,
   contacts: contactsReducer,
   orders: orderReducer,
+  about: aboutReducer,
+  gallery: galleryReducer,
 });
 
 export const store = createStore(rootReducer, applyMiddleware(thunk));

@@ -10,3 +10,5 @@ export const BOARD_PAGE = "/board";
 export const SPARE_PAGE = "/spare";
 export const CONTACT_PAGE = "/contact-us";
 export const ORDER_PAGE = "/orders";
+export const ABOUT_PAGE = "/about";
+export const GALLERY_PAGE = "/gallery";
