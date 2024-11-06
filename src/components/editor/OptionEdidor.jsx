@@ -13,18 +13,22 @@ import {
 import DeleteModal from "../modals/DeleteModal";
 import ImageModal from "../modals/ImageModal";
 import { useDispatch } from "react-redux";
+import ContentPasteIcon from "@mui/icons-material/ContentPaste";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+
 import {
   addSubItem,
   destroySubItem,
   editSubItem,
   getSingleData,
   getSingleService,
+  setCopy,
 } from "../../store/actions/constructor-action";
 import { useSelector } from "react-redux";
-import ConstructorItemEditor from "./ConstructorItemEditor";
 import ConstructorItemSubEditor from "./ConstructorItemSubEditor";
 import AddModal from "../modals/AddModal";
 import { useParams } from "react-router-dom";
+import { transformObject } from "../../hooks/helpers";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -62,6 +66,7 @@ const defaultKeys = {
 
 const OptionEdidor = ({
   data,
+  isNew,
   value,
   handleChange,
   handleTitleChange,
@@ -86,7 +91,9 @@ const OptionEdidor = ({
   const [updatedData, setUpdatedData] = useState([]);
   const [newService, setNewService] = useState(defaultKeys);
   const [haveItems, setHeveItems] = useState(false);
+
   const service = useSelector((state) => state.construct.service);
+  const copy = useSelector((state) => state.construct.copy);
 
   useEffect(() => {
     if (data?.ConstuctorOptionItems?.length) {
@@ -182,7 +189,15 @@ const OptionEdidor = ({
     setNewService(defaultKeys); // Reset the form
     dispatch(getSingleData(id));
   };
-
+  const fieldsToTransform = {
+    name: ["nameAm", "nameRu", "nameEn", "nameGe"],
+    desc: ["descAm", "descRu", "descEn", "descGe"],
+    showIn: ["showIn"],
+    price: ["price"],
+    image: ["image"],
+    width: ["width"],
+    height: ["height"],
+  };
   if (!data) return;
 
   return (
@@ -195,6 +210,30 @@ const OptionEdidor = ({
       }}
     >
       <Box sx={{ display: "flex", gap: "30px" }}>
+        {isNew && (
+          <Box>
+            <Button
+              onClick={() => {
+                console.log(fieldsToTransform, "actualData");
+                const actualData = transformObject(copy, fieldsToTransform);
+
+                if (actualData) {
+                  actualData.name.map((i) => handleTitleChange(i));
+                  actualData.desc.map((i) => handleDescriptionChange(i));
+                  actualData.width.map((i) => handleWidthChange(i));
+                  actualData.height.map((i) => handleHeightChange(i));
+                  actualData.image.map((i) =>
+                    handleImageChange(i.target.value)
+                  );
+                  actualData.price.map((i) => handleNewPriceChange(i));
+                }
+              }}
+            >
+              <ContentPasteIcon />
+              Paste
+            </Button>
+          </Box>
+        )}
         <Box>
           {Object.hasOwn(data, "title") ? (
             <TextField
@@ -307,7 +346,6 @@ const OptionEdidor = ({
           </Box>
         </Box>
         <Box>
-          {data.id}
           <img src={data.image} alt="Preview" className="img_preview" />
           <Button
             variant="outlined"
@@ -317,59 +355,73 @@ const OptionEdidor = ({
             {data.image ? "Delete" : "Add"} Image
           </Button>
         </Box>
-        <Box>
-          <Typography variant="h6" gutterBottom>
-            Собери сам SUB ITEMS
-          </Typography>
-          <Button
-            variant="contained"
-            onClick={() => {
-              setAdd(true);
-            }}
-          >
-            ADD NEW
-          </Button>
-          <AddModal
-            open={add}
-            handleClose={() => setAdd(false)}
-            handleAdd={handleAddService}
-          >
-            <ConstructorItemSubEditor
-              data={newService}
-              newItem={true}
-              value={valueSub}
-              handleChange={handleTabChange}
-              handleTitleChange={handleNewTitleChange}
-              handleRequireChange={handleNewRequreChange}
-              handleDescriptionChange={handleNewDescriptionChange}
-            />
-          </AddModal>
-          <Box sx={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-            {haveItems &&
-              updatedData?.map((item) => {
-                return (
-                  <ConstructorItemSubEditor
-                    key={item.id}
-                    data={item}
-                    value={valueSub}
-                    images="BoardImages"
-                    handleChange={handleTabChange}
-                    handleTitleChange={(event) =>
-                      handleTitleSubChange(event, item.id, true)
-                    }
-                    handleRequireChange={(event) =>
-                      handleRequireChange(event.target.checked, item.id)
-                    }
-                    handleDescriptionChange={(newValue, name) =>
-                      handleSubDescriptionChange(newValue, item.id, name)
-                    }
-                    handleEdit={() => handleSubEdit(item.id)}
-                    handleDelete={() => handleSubDelete(item.id)}
-                  />
-                );
-              })}
+        {!isNew && (
+          <Box>
+            <Typography variant="h6" gutterBottom>
+              Собери сам SUB ITEMS
+            </Typography>
+            <Button
+              variant="contained"
+              onClick={() => {
+                setAdd(true);
+              }}
+            >
+              ADD NEW
+            </Button>
+            <AddModal
+              open={add}
+              handleClose={() => setAdd(false)}
+              handleAdd={handleAddService}
+            >
+              <ConstructorItemSubEditor
+                data={newService}
+                newItem={true}
+                value={valueSub}
+                handleChange={handleTabChange}
+                handleTitleChange={handleNewTitleChange}
+                handleRequireChange={handleNewRequreChange}
+                handleDescriptionChange={handleNewDescriptionChange}
+              />
+            </AddModal>
+            <Box sx={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+              {haveItems &&
+                updatedData?.map((item) => {
+                  return (
+                    <>
+                      <Box p={1}>
+                        <Button
+                          onClick={() => {
+                            dispatch(setCopy(item));
+                          }}
+                        >
+                          <ContentCopyIcon /> Copy
+                        </Button>
+                      </Box>
+                      <ConstructorItemSubEditor
+                        key={item.id}
+                        data={item}
+                        isNew={false}
+                        value={valueSub}
+                        images="BoardImages"
+                        handleChange={handleTabChange}
+                        handleTitleChange={(event) =>
+                          handleTitleSubChange(event, item.id, true)
+                        }
+                        handleRequireChange={(event) =>
+                          handleRequireChange(event.target.checked, item.id)
+                        }
+                        handleDescriptionChange={(newValue, name) =>
+                          handleSubDescriptionChange(newValue, item.id, name)
+                        }
+                        handleEdit={() => handleSubEdit(item.id)}
+                        handleDelete={() => handleSubDelete(item.id)}
+                      />
+                    </>
+                  );
+                })}
+            </Box>
           </Box>
-        </Box>
+        )}
       </Box>
       <Box sx={{ padding: "20px", display: "flex", gap: "20px" }}>
         {handleEdit && (

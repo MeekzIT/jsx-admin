@@ -13,7 +13,6 @@ const AboutPage = () => {
     dispatch(getData());
   }, [dispatch]);
 
-  console.log(data, "getData");
 
   // Fetch data on component mount
   useEffect(() => {
@@ -89,8 +88,6 @@ const AboutPage = () => {
     const itemToEdit = updatedData.find((item) => item.id === id);
     dispatch(editData(itemToEdit));
   };
-
-  console.log(data, "data");
 
   return (
     <Box m={2}>

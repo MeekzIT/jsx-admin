@@ -25,7 +25,6 @@ export const partnersReducer = (state = initialState, action) => {
       };
 
     case ADD_PARTNERS:
-      console.log(action, "[[[[");
 
       return {
         ...state,

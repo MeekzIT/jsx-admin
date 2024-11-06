@@ -69,3 +69,5 @@ export const ADD_PARTNERS = "ADD_PARTNERS";
 export const DEL_PARTNERS = "DEL_PARTNERS";
 export const GET_PARTNERS = "GET_PARTNERS";
 export const EDIT_PARTNERS = "EDIT_PARTNERS";
+
+export const SET_COPY = "SET_COPY";

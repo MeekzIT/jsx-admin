@@ -13,12 +13,14 @@ import {
 import DeleteModal from "../modals/DeleteModal";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import {
   addOption,
   destroyOption,
   editOption,
   getData,
   getSingleData,
+  setCopy,
 } from "../../store/actions/constructor-action";
 import OptionEdidor from "./OptionEdidor";
 import AddModal from "../modals/AddModal";
@@ -224,6 +226,7 @@ const ConstructorItemEditor = ({
     addOption({ ...newService, itemId: data.id });
     setAdd(false);
     setNewService(defaultKeys); // Reset the form
+    dispatch(setCopy(null));
   };
 
   return (
@@ -343,12 +346,17 @@ const ConstructorItemEditor = ({
               <Button variant="contained" onClick={() => setAdd(true)}>
                 ADD NEW
               </Button>
+
               <AddModal
                 open={add}
-                handleClose={() => setAdd(false)}
+                handleClose={() => {
+                  setAdd(false);
+                  setNewService(defaultKeys); // Reset the form
+                }}
                 handleAdd={handleAddService}
               >
                 <OptionEdidor
+                  isNew={true}
                   data={newService}
                   value={serviceTab}
                   handleChange={handleServiceTabChange}
@@ -379,8 +387,16 @@ const ConstructorItemEditor = ({
                       {updatedData?.map((i, idx) => {
                         return (
                           <CustomTabPanel value={option} index={idx}>
+                            <Button
+                              onClick={() => {
+                                dispatch(setCopy(i));
+                              }}
+                            >
+                              <ContentCopyIcon /> Copy
+                            </Button>
                             <OptionEdidor
                               data={i}
+                              isNew={false}
                               value={serviceTab}
                               handleChange={handleServiceTabChange}
                               handleTitleChange={(event) =>

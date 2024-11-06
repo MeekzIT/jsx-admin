@@ -131,7 +131,6 @@ const SelfPage = () => {
 
   // Handle new service title change
   const handleNewTitleChange = (event, name) => {
-    console.log(name, event.target.value, "event.target.value");
 
     name
       ? handleNewServiceChange(event.target.name, event.target.value)

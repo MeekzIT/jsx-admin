@@ -32,7 +32,6 @@ const DataTable = ({
 	const handleClick = event => {
 		setAnchorEl(event.currentTarget)
 	}
-	console.log({ columns })
 	return (
 		<Box sx={{ overflow: "auto" }}>
 			<Box sx={{ width: "100%", display: "table", tableLayout: "fixed" }}>

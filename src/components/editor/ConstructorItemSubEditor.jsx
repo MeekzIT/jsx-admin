@@ -10,6 +10,8 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import ContentPasteIcon from "@mui/icons-material/ContentPaste";
 import DeleteModal from "../modals/DeleteModal";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
@@ -18,10 +20,12 @@ import {
   destroySubItemOption,
   editSubItemOption,
   getSingleData,
+  setCopy,
 } from "../../store/actions/constructor-action";
 import AddModal from "../modals/AddModal";
 import OptionSubEdidor from "./OptionSubEdidor";
 import { useParams } from "react-router-dom";
+import { transformObject } from "../../hooks/helpers";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -71,10 +75,10 @@ const ConstructorItemSubEditor = ({
   const [checked, setChecked] = useState(data.require);
   const [updatedData, setUpdatedData] = useState([]);
   const [newService, setNewService] = useState(defaultKeys);
-  // const [newServiceSubItem, setNewServiceSub] = useState(defaultKeysSub);
   const [option, setOption] = useState(0);
   const [serviceTab, setServiceTab] = useState(0);
   const service = useSelector((state) => state.construct.service);
+  const copy = useSelector((state) => state.construct.copy);
   const handleTabChange = (event, newValue) => {
     setOption(newValue);
   };
@@ -87,19 +91,7 @@ const ConstructorItemSubEditor = ({
     setChecked(event.target.checked);
     handleRequireChange(event);
   };
-  // useEffect(() => {
-  //   if (!service && single?.ConstuctorItems) {
-  //     single.ConstuctorItems?.forEach((s) => {
-  //       const itemWithOptions = s.ConstuctorItemOptions.find(
-  //         (i) => i.ConstuctorOptionItems.length > 0
-  //       );
-  //       if (itemWithOptions) {
-  //         dispatch(getSingleService(String(itemWithOptions.id)));
-  //         setHaveServices(itemWithOptions);
-  //       }
-  //     });
-  //   }
-  // }, [dispatch, single, service]);
+
   useEffect(() => {
     if (data) {
       setUpdatedData(data?.ConstuctorItemOptionItemOptions);
@@ -223,6 +215,10 @@ const ConstructorItemSubEditor = ({
     handleNewServiceChange("width", event.target.value);
   };
 
+  const handleNewImageChange = (newValue) => {
+    handleNewServiceChange("image", newValue);
+  };
+
   const handleNewHeightChange = (event) => {
     handleNewServiceChange("height", event.target.value);
   };
@@ -233,6 +229,18 @@ const ConstructorItemSubEditor = ({
     setAdd(false); // Close the modal
     setNewService(defaultKeys); // Reset the form
   };
+
+  const fieldsToTransform = {
+    name: ["nameAm", "nameRu", "nameEn", "nameGe"],
+    desc: ["descAm", "descRu", "descEn", "descGe"],
+    showIn: ["showIn"],
+    price: ["price"],
+    image: ["image"],
+    width: ["width"],
+    height: ["height"],
+  };
+  console.log(copy, "111");
+
   return (
     <Card
       mb={2}
@@ -244,8 +252,26 @@ const ConstructorItemSubEditor = ({
         width: "100vw",
       }}
     >
-      <h1>{data.id}</h1>
       <Box sx={{ display: "flex", gap: "30px" }}>
+        {newItem && (
+          <Box>
+            <Button
+              onClick={() => {
+                console.log(fieldsToTransform, "actualData");
+                const actualData = transformObject(copy, fieldsToTransform);
+
+                if (actualData) {
+                  actualData.name.map((i) => handleTitleChange(i));
+                  actualData.desc.map((i) => handleDescriptionChange(i));
+                  actualData.price.map((i) => handleNewPriceChange(i));
+                }
+              }}
+            >
+              <ContentPasteIcon />
+              Paste
+            </Button>
+          </Box>
+        )}
         <Box
           sx={{
             width: "100%",
@@ -349,7 +375,6 @@ const ConstructorItemSubEditor = ({
               <Typography variant="h6" gutterBottom>
                 Собери сам SUB OPTIONS
               </Typography>
-              <h1>{data.id}</h1>
               <Button variant="contained" onClick={() => setAdd(true)}>
                 ADD NEW
               </Button>
@@ -361,8 +386,10 @@ const ConstructorItemSubEditor = ({
                 <OptionSubEdidor
                   data={newService}
                   value={serviceTab}
+                  isNew={true}
                   handleChange={handleServiceTabChange}
                   handleNewPriceChange={handleNewPriceChange}
+                  handleImageChange={handleNewImageChange}
                   handleImageInConstructor={handleNewConstructorImageChange}
                   handleTitleChange={handleNewTitleChange}
                   handleDescriptionChange={handleNewDescriptionChange}
@@ -387,46 +414,58 @@ const ConstructorItemSubEditor = ({
                       </Tabs>
                       {updatedData?.map((i, idx) => {
                         return (
-                          <CustomTabPanel value={option} index={idx}>
-                            <OptionSubEdidor
-                              data={i}
-                              value={serviceTab}
-                              handleChange={handleServiceTabChange}
-                              handleTitleChange={(event) =>
-                                handleOptionTitleChange(event, i.id, true)
-                              }
-                              handleDescriptionChange={(newValue, name) =>
-                                handleOptionDescriptionChange(
-                                  newValue,
-                                  i.id,
-                                  name
-                                )
-                              }
-                              handleImageInConstructor={(event) =>
-                                handleConstructorImageChange(
-                                  event.target.checked,
-                                  i.id
-                                )
-                              }
-                              handleImageChange={(newValue) =>
-                                handleImageChange(newValue, i.id)
-                              }
-                              handleNewPriceChange={(e) =>
-                                handleOptionPriceChange(e.target.value, i.id)
-                              }
-                              handleWidthChange={(e) =>
-                                handleOptionWidthChange(e.target.value, i.id)
-                              }
-                              handleHeightChange={(e) =>
-                                handleOptionHeightChange(e.target.value, i.id)
-                              }
-                              handleImageDelte={() => {
-                                handleImageDelte(i.id);
-                              }}
-                              handleEdit={() => handleEditOption(i.id)}
-                              handleDelete={() => handleDeleteOption(i.id)}
-                            />
-                          </CustomTabPanel>
+                          <div key={idx}>
+                            <CustomTabPanel value={option} index={idx}>
+                              <Box p={1}>
+                                <Button
+                                  onClick={() => {
+                                    dispatch(setCopy(i));
+                                  }}
+                                >
+                                  <ContentCopyIcon /> Copy
+                                </Button>
+                              </Box>
+                              <OptionSubEdidor
+                                data={i}
+                                isNew={false}
+                                value={serviceTab}
+                                handleChange={handleServiceTabChange}
+                                handleTitleChange={(event) =>
+                                  handleOptionTitleChange(event, i.id, true)
+                                }
+                                handleDescriptionChange={(newValue, name) =>
+                                  handleOptionDescriptionChange(
+                                    newValue,
+                                    i.id,
+                                    name
+                                  )
+                                }
+                                handleImageInConstructor={(event) =>
+                                  handleConstructorImageChange(
+                                    event.target.checked,
+                                    i.id
+                                  )
+                                }
+                                handleImageChange={(newValue) =>
+                                  handleImageChange(newValue, i.id)
+                                }
+                                handleNewPriceChange={(e) =>
+                                  handleOptionPriceChange(e.target.value, i.id)
+                                }
+                                handleWidthChange={(e) =>
+                                  handleOptionWidthChange(e.target.value, i.id)
+                                }
+                                handleHeightChange={(e) =>
+                                  handleOptionHeightChange(e.target.value, i.id)
+                                }
+                                handleImageDelte={() => {
+                                  handleImageDelte(i.id);
+                                }}
+                                handleEdit={() => handleEditOption(i.id)}
+                                handleDelete={() => handleDeleteOption(i.id)}
+                              />
+                            </CustomTabPanel>
+                          </div>
                         );
                       })}
                     </Box>

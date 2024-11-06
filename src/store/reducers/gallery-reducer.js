@@ -25,7 +25,6 @@ export const galleryReducer = (state = initialState, action) => {
       };
 
     case ADD_GALLERY:
-      console.log(action, "[[[[");
 
       return {
         ...state,

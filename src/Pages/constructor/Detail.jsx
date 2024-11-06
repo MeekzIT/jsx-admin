@@ -117,7 +117,6 @@ const Detail = () => {
     setAdd(false); // Close the modal
     setNewService(defaultKeys); // Reset the form
   };
-  console.log(data, "data");
 
   return (
     <Box m={2}>

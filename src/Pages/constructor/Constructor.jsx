@@ -33,7 +33,6 @@ const ConstructorPage = () => {
     dispatch(getData());
   }, [dispatch]);
 
-  console.log(data, "getData");
 
   // Fetch data on component mount
   useEffect(() => {
@@ -164,7 +163,6 @@ const ConstructorPage = () => {
     setAdd(false); // Close the modal
     setNewService(defaultKeys); // Reset the form
   };
-  console.log(data, "data");
 
   return (
     <Box m={2}>

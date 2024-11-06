@@ -23,7 +23,6 @@ export const getData = () => {
 };
 
 export const editData = (data) => {
-  console.log(data, "----");
 
   return (dispatch) => {
     axios

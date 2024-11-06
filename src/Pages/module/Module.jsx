@@ -115,7 +115,6 @@ const ModulePage = () => {
           : item
       )
     );
-    console.log(imageId, serviceId, "imageId, serviceIdimageId, serviceId");
 
     dispatch(deleteImage({ id: imageId }));
     dispatch(getData());

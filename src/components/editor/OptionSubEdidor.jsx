@@ -12,6 +12,9 @@ import {
 } from "@mui/material";
 import DeleteModal from "../modals/DeleteModal";
 import ImageModal from "../modals/ImageModal";
+import { transformObject } from "../../hooks/helpers";
+import { useSelector } from "react-redux";
+import ContentPasteIcon from "@mui/icons-material/ContentPaste";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -39,6 +42,7 @@ function a11yProps(index) {
 const OptionSubEdidor = ({
   data,
   value,
+  isNew,
   handleChange,
   handleTitleChange,
   handleDescriptionChange,
@@ -55,14 +59,21 @@ const OptionSubEdidor = ({
   const [openImg, setOpenImg] = useState(false);
   const [delImage, setDelImage] = useState(false);
   const [checked, setChecked] = useState(data?.showIn);
+  const copy = useSelector((state) => state.construct.copy);
 
   const handleInConstructorChange = (event) => {
     setChecked(event.target.checked);
     handleImageInConstructor(event);
   };
-
-  console.log(data, "ooo");
-
+  const fieldsToTransform = {
+    name: ["nameAm", "nameRu", "nameEn", "nameGe"],
+    desc: ["descAm", "descRu", "descEn", "descGe"],
+    showIn: ["showIn"],
+    price: ["price"],
+    image: ["image"],
+    width: ["width"],
+    height: ["height"],
+  };
   return (
     <Card
       mb={2}
@@ -73,6 +84,30 @@ const OptionSubEdidor = ({
       }}
     >
       <Box sx={{ display: "flex", gap: "30px" }}>
+        {isNew && (
+          <Box>
+            <Button
+              onClick={() => {
+                const actualData = transformObject(copy, fieldsToTransform);
+                console.log(actualData, "actualData");
+
+                if (actualData) {
+                  actualData.name.map((i) => handleTitleChange(i));
+                  actualData.desc.map((i) => handleDescriptionChange(i));
+                  actualData.width.map((i) => handleWidthChange(i));
+                  actualData.height.map((i) => handleHeightChange(i));
+                  actualData.image.map((i) =>
+                    handleImageChange(i.target.value)
+                  );
+                  actualData.price.map((i) => handleNewPriceChange(i));
+                }
+              }}
+            >
+              <ContentPasteIcon />
+              Paste
+            </Button>
+          </Box>
+        )}
         <Box>
           {Object.hasOwn(data, "title") ? (
             <TextField

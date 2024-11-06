@@ -10,6 +10,7 @@ import {
   GET_CONSTRUCTOR,
   GET_SINGLE_CONSTRUCTOR,
   GET_SINGLE_CONSTRUCTOR_ITEM,
+  SET_COPY,
 } from "../types";
 
 export const getData = () => {
@@ -622,5 +623,23 @@ export const destroySubItemOption = (data) => {
       .catch(function (error) {
         console.error(error);
       });
+  };
+};
+
+// ---------------
+
+export const setCopy = (data) => {
+  return (dispatch) => {
+    dispatch({
+      type: SET_COPY,
+      payload: data,
+    });
+    Swal.fire({
+      position: "center",
+      iconColor: "#008491",
+      icon: "success",
+      showConfirmButton: false,
+      timer: 1500,
+    });
   };
 };

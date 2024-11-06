@@ -6,12 +6,14 @@ import {
   GET_CONSTRUCTOR,
   GET_SINGLE_CONSTRUCTOR,
   GET_SINGLE_CONSTRUCTOR_ITEM,
+  SET_COPY,
 } from "../types";
 
 const initialState = {
   data: null,
   single: null,
   service: null,
+  copy: null,
 };
 
 export const constructorReducer = (state = initialState, action) => {
@@ -33,7 +35,6 @@ export const constructorReducer = (state = initialState, action) => {
         data: state.data.filter((service) => service.id !== action.payload.id),
       };
     case ADD_OPTION:
-      console.log(action.payload, state.single, "999");
       return;
     case EDIT_CONSTRUCTOR:
       return {
@@ -44,7 +45,11 @@ export const constructorReducer = (state = initialState, action) => {
             : service
         ),
       };
-
+    case SET_COPY:
+      return {
+        ...state,
+        copy: action.payload,
+      };
     default:
       return state;
   }
