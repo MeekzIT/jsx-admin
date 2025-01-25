@@ -76,6 +76,14 @@ const ModulePage = () => {
     );
   };
 
+  const handleIdChange = (event, id) => {
+    setUpdatedData((prevData) =>
+      prevData.map((item) =>
+        item.id === id ? { ...item, constId: event.target.value } : item
+      )
+    );
+  };
+
   // Handle image change for existing items
   const handleSingleImageChange = (newValue, id, name) => {
     setUpdatedData((prevData) =>
@@ -204,6 +212,7 @@ const ModulePage = () => {
             handleSingleImageChange={(newValue, name) =>
               handleSingleImageChange(newValue, item.id, name)
             }
+            handleIdChange={(event) => handleIdChange(event, item.id)}
             handleImageChange={(newValue) =>
               handleImageChange(newValue, item.id)
             }

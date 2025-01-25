@@ -42,6 +42,7 @@ const TextEditor = ({
   handleChange,
   handleTitleChange,
   handleDescriptionChange,
+  handleIdChange,
   handleSingleImageChange,
   handleImageChange,
   handleDeleteImage,
@@ -100,6 +101,16 @@ const TextEditor = ({
                     value={data.titleGe}
                     onChange={handleTitleChange}
                   />
+
+                  {handleIdChange ? (
+                    <TextField
+                      label="Id in COnstructor"
+                      variant="outlined"
+                      name="constId"
+                      value={data.constId}
+                      onChange={handleIdChange}
+                    />
+                  ) : undefined}
                 </Box>
               )}
               <Box sx={{ width: "100%" }}>

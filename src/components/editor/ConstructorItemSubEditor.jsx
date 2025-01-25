@@ -65,6 +65,7 @@ const ConstructorItemSubEditor = ({
   handleTitleChange,
   handleDescriptionChange,
   handleRequireChange,
+  handleWithValueChange,
   handleEdit,
   handleDelete,
 }) => {
@@ -72,6 +73,7 @@ const ConstructorItemSubEditor = ({
   const dispatch = useDispatch();
   const [add, setAdd] = useState(false);
   const [openDel, setOpenDel] = useState(false);
+  const [withValue, setWithaValue] = useState(data.withValue);
   const [checked, setChecked] = useState(data.require);
   const [updatedData, setUpdatedData] = useState([]);
   const [newService, setNewService] = useState(defaultKeys);
@@ -90,6 +92,11 @@ const ConstructorItemSubEditor = ({
   const handleRiqureChange = (event) => {
     setChecked(event.target.checked);
     handleRequireChange(event);
+  };
+
+  const handleLocalWithValueChange = (event) => {
+    setWithaValue(event.target.checked);
+    handleWithValueChange(event);
   };
 
   useEffect(() => {
@@ -321,6 +328,17 @@ const ConstructorItemSubEditor = ({
               checked={checked}
               name="require"
               onChange={handleRiqureChange}
+              inputProps={{ "aria-label": "controlled" }}
+            />
+          </Box>
+          <Box sx={{ mt: 3 }}>
+            <Typography variant="h6" gutterBottom>
+              With Value ?
+            </Typography>
+            <Switch
+              checked={withValue}
+              name="require"
+              onChange={handleLocalWithValueChange}
               inputProps={{ "aria-label": "controlled" }}
             />
           </Box>

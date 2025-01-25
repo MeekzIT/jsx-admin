@@ -79,6 +79,14 @@ const Detail = () => {
     );
   };
 
+  const handleWithValueChange = (newValue, id) => {
+    setUpdatedData((prevData) =>
+      prevData.map((item) =>
+        item.id === id ? { ...item, withValue: newValue } : item
+      )
+    );
+  };
+
   const handleEdit = (id) => {
     const itemToEdit = updatedData.find((item) => item.id === id);
     dispatch(editItem(itemToEdit));
@@ -158,6 +166,9 @@ const Detail = () => {
               }
               handleRequireChange={(event) =>
                 handleRequireChange(event.target.checked, item.id)
+              }
+              handleWithValueChange={(event) =>
+                handleWithValueChange(event.target.checked, item.id)
               }
               handleDescriptionChange={(newValue, name) =>
                 handleDescriptionChange(newValue, item.id, name)

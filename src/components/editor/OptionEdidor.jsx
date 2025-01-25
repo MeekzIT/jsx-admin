@@ -79,6 +79,9 @@ const OptionEdidor = ({
   handleHeightChange,
   handleEdit,
   handleDelete,
+  handleMobileImageChange,
+  handleOptionMobileWidthChange,
+  handleOptionMobileHeightChange,
 }) => {
   const { id } = useParams();
   const dispatch = useDispatch();
@@ -146,6 +149,14 @@ const OptionEdidor = ({
     setUpdatedData((prevData) =>
       prevData.map((item) =>
         item.id === id ? { ...item, require: newValue } : item
+      )
+    );
+  };
+
+  const handleWithValueChange = (newValue, id) => {
+    setUpdatedData((prevData) =>
+      prevData.map((item) =>
+        item.id === id ? { ...item, withValue: newValue } : item
       )
     );
   };
@@ -293,6 +304,20 @@ const OptionEdidor = ({
                 value={data.height}
                 onChange={handleHeightChange}
               />
+              <TextField
+                label="Mobile Width"
+                variant="outlined"
+                name="mobileWidth"
+                value={data.mobileWidth}
+                onChange={handleOptionMobileWidthChange}
+              />
+              <TextField
+                label="Mobile Height"
+                variant="outlined"
+                name="mobileHeight"
+                value={data.mobileHeight}
+                onChange={handleOptionMobileHeightChange}
+              />
               <Box sx={{ mt: 3 }}>
                 <Typography variant="h6" gutterBottom>
                   Show Image In Constructor ?
@@ -409,6 +434,9 @@ const OptionEdidor = ({
                         }
                         handleRequireChange={(event) =>
                           handleRequireChange(event.target.checked, item.id)
+                        }
+                        handleWithValueChange={(event) =>
+                          handleWithValueChange(event.target.checked, item.id)
                         }
                         handleDescriptionChange={(newValue, name) =>
                           handleSubDescriptionChange(newValue, item.id, name)

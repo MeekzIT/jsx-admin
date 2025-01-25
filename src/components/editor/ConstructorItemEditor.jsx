@@ -10,6 +10,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import NumbersIcon from "@mui/icons-material/Numbers";
 import DeleteModal from "../modals/DeleteModal";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
@@ -64,6 +65,7 @@ const ConstructorItemEditor = ({
   handleTitleChange,
   handleDescriptionChange,
   handleRequireChange,
+  handleWithValueChange,
   handleEdit,
   handleDelete,
 }) => {
@@ -72,6 +74,7 @@ const ConstructorItemEditor = ({
   const [add, setAdd] = useState(false);
   const [openDel, setOpenDel] = useState(false);
   const [checked, setChecked] = useState(data.require);
+  const [withValue, setWithaValue] = useState(data.withValue);
   const [updatedData, setUpdatedData] = useState([]);
   const [newService, setNewService] = useState(defaultKeys);
   const [option, setOption] = useState(0);
@@ -88,6 +91,11 @@ const ConstructorItemEditor = ({
   const handleRiqureChange = (event) => {
     setChecked(event.target.checked);
     handleRequireChange(event);
+  };
+
+  const handleLocalWithValueChange = (event) => {
+    setWithaValue(event.target.checked);
+    handleWithValueChange(event);
   };
 
   useEffect(() => {
@@ -133,6 +141,18 @@ const ConstructorItemEditor = ({
       return prevData.map((item) => {
         if (item.id == currentID) {
           return dispatch(editOption({ ...item, image: newValue }));
+        } else return item;
+      });
+    });
+    dispatch(getData());
+    dispatch(getSingleData(id));
+  };
+
+  const handleMobileImageChange = (newValue, currentID) => {
+    setUpdatedData((prevData) => {
+      return prevData.map((item) => {
+        if (item.id == currentID) {
+          return dispatch(editOption({ ...item, mobileImage: newValue }));
         } else return item;
       });
     });
@@ -198,6 +218,23 @@ const ConstructorItemEditor = ({
       )
     );
   };
+
+  const handleOptionMobileWidthChange = (newValue, id) => {
+    setUpdatedData((prevData) =>
+      prevData.map((item) =>
+        item.id === id ? { ...item, mobileWidth: newValue } : item
+      )
+    );
+  };
+
+  const handleOptionMobileHeightChange = (newValue, id) => {
+    setUpdatedData((prevData) =>
+      prevData.map((item) =>
+        item.id === id ? { ...item, mobileHeight: newValue } : item
+      )
+    );
+  };
+
   const handleNewTitleChange = (event) => {
     handleNewServiceChange(event.target.name, event.target.value);
   };
@@ -289,6 +326,17 @@ const ConstructorItemEditor = ({
               checked={checked}
               name="require"
               onChange={handleRiqureChange}
+              inputProps={{ "aria-label": "controlled" }}
+            />
+          </Box>
+          <Box sx={{ mt: 3 }}>
+            <Typography variant="h6" gutterBottom>
+              With Value ?
+            </Typography>
+            <Switch
+              checked={withValue}
+              name="require"
+              onChange={handleLocalWithValueChange}
               inputProps={{ "aria-label": "controlled" }}
             />
           </Box>
@@ -392,8 +440,12 @@ const ConstructorItemEditor = ({
                                 dispatch(setCopy(i));
                               }}
                             >
-                              <ContentCopyIcon /> Copy
+                              <ContentCopyIcon />
+                              Copy
                             </Button>
+                            <Box sx={{ display: "flex", alignItems: "center" }}>
+                              <NumbersIcon /> <h3>{i.id}</h3>
+                            </Box>
                             <OptionEdidor
                               data={i}
                               isNew={false}
@@ -414,6 +466,18 @@ const ConstructorItemEditor = ({
                               handleHeightChange={(e) =>
                                 handleOptionHeightChange(e.target.value, i.id)
                               }
+                              handleOptionMobileWidthChange={(e) =>
+                                handleOptionMobileWidthChange(
+                                  e.target.value,
+                                  i.id
+                                )
+                              }
+                              handleOptionMobileHeightChange={(e) =>
+                                handleOptionMobileHeightChange(
+                                  e.target.value,
+                                  i.id
+                                )
+                              }
                               handleImageInConstructor={(event) =>
                                 handleConstructorImageChange(
                                   event.target.checked,
@@ -422,6 +486,9 @@ const ConstructorItemEditor = ({
                               }
                               handleImageChange={(newValue) =>
                                 handleImageChange(newValue, i.id)
+                              }
+                              handleMobileImageChange={(newValue) =>
+                                handleMobileImageChange(newValue, i.id)
                               }
                               handleImageDelte={() => {
                                 handleImageDelte(i.id);
