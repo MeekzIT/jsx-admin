@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import SlateEditor from "../SlateEditor/Editor";
 import {
   Box,
@@ -129,9 +129,19 @@ const ConstructorItemEditor = ({
   };
 
   const handleOptionPriceChange = (newValue, id) => {
+    console.log(newValue, id, 111);
+
     setUpdatedData((prevData) =>
       prevData.map((item) =>
         item.id === id ? { ...item, price: newValue } : item
+      )
+    );
+  };
+
+  const handleOptionOrdeerChange = (newValue, id) => {
+    setUpdatedData((prevData) =>
+      prevData.map((item) =>
+        item.id === id ? { ...item, order: newValue } : item
       )
     );
   };
@@ -265,6 +275,110 @@ const ConstructorItemEditor = ({
     setNewService(defaultKeys); // Reset the form
     dispatch(setCopy(null));
   };
+
+  const renderedTabs = useMemo(() => {
+    if (!data?.ConstuctorItemOptions?.length) return undefined;
+
+    return (
+      <Box>
+        {updatedData.length && (
+          <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+            <Tabs value={option} onChange={handleTabChange}>
+              {updatedData?.map((i, idx) => (
+                <Tab
+                  key={i?.id}
+                  label={i?.nameRu?.slice(0, 10)}
+                  {...a11yProps(idx)}
+                />
+              ))}
+            </Tabs>
+            {updatedData?.map((i, idx) => (
+              <CustomTabPanel value={option} index={idx} key={i?.id}>
+                <Button
+                  onClick={() => {
+                    dispatch(setCopy(i));
+                  }}
+                >
+                  <ContentCopyIcon />
+                  Copy
+                </Button>
+                <Box sx={{ display: "flex", alignItems: "center" }}>
+                  <NumbersIcon /> <h3>{i?.id}</h3>
+                </Box>
+                <OptionEdidor
+                  data={i}
+                  isNew={false}
+                  value={serviceTab}
+                  handleChange={handleServiceTabChange}
+                  handleTitleChange={(event) =>
+                    handleOptionTitleChange(event, i.id, true)
+                  }
+                  handleDescriptionChange={(newValue) =>
+                    handleOptionDescriptionChange(newValue, i.id)
+                  }
+                  handleNewPriceChange={(e) =>
+                    handleOptionPriceChange(e.target.value, i.id)
+                  }
+                  handleOptionOrdeerChange={(e) =>
+                    handleOptionOrdeerChange(e.target.value, i.id)
+                  }
+                  handleWidthChange={(e) =>
+                    handleOptionWidthChange(e.target.value, i.id)
+                  }
+                  handleHeightChange={(e) =>
+                    handleOptionHeightChange(e.target.value, i.id)
+                  }
+                  handleOptionMobileWidthChange={(e) =>
+                    handleOptionMobileWidthChange(e.target.value, i.id)
+                  }
+                  handleOptionMobileHeightChange={(e) =>
+                    handleOptionMobileHeightChange(e.target.value, i.id)
+                  }
+                  handleImageInConstructor={(event) =>
+                    handleConstructorImageChange(event.target.checked, i.id)
+                  }
+                  handleImageChange={(newValue) =>
+                    handleImageChange(newValue, i.id)
+                  }
+                  handleMobileImageChange={(newValue) =>
+                    handleMobileImageChange(newValue, i.id)
+                  }
+                  handleImageDelte={() => {
+                    handleImageDelte(i.id);
+                  }}
+                  handleEdit={() => handleEditOption(i.id)}
+                  handleDelete={() => handleDeleteOption(i.id)}
+                />
+              </CustomTabPanel>
+            ))}
+          </Box>
+        )}
+      </Box>
+    );
+  }, [
+    data?.ConstuctorItemOptions?.length,
+    updatedData,
+    option,
+    handleTabChange,
+    dispatch,
+    setCopy,
+    serviceTab,
+    handleServiceTabChange,
+    handleOptionTitleChange,
+    handleOptionDescriptionChange,
+    handleOptionPriceChange,
+    handleOptionOrdeerChange,
+    handleOptionWidthChange,
+    handleOptionHeightChange,
+    handleOptionMobileWidthChange,
+    handleOptionMobileHeightChange,
+    handleConstructorImageChange,
+    handleImageChange,
+    handleMobileImageChange,
+    handleImageDelte,
+    handleEditOption,
+    handleDeleteOption,
+  ]);
 
   return (
     <Card
@@ -417,7 +531,7 @@ const ConstructorItemEditor = ({
                   handleHeightChange={handleNewHeightChange}
                 />
               </AddModal>
-              {data?.ConstuctorItemOptions?.length ? (
+              {/* {data?.ConstuctorItemOptions?.length ? (
                 <Box>
                   {updatedData.length && (
                     <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
@@ -444,7 +558,7 @@ const ConstructorItemEditor = ({
                               Copy
                             </Button>
                             <Box sx={{ display: "flex", alignItems: "center" }}>
-                              <NumbersIcon /> <h3>{i.id}</h3>
+                              <NumbersIcon /> <h3>{i?.id}</h3>
                             </Box>
                             <OptionEdidor
                               data={i}
@@ -459,6 +573,9 @@ const ConstructorItemEditor = ({
                               }
                               handleNewPriceChange={(e) =>
                                 handleOptionPriceChange(e.target.value, i.id)
+                              }
+                              handleOptionOrdeerChange={(e) =>
+                                handleOptionOrdeerChange(e.target.value, i.id)
                               }
                               handleWidthChange={(e) =>
                                 handleOptionWidthChange(e.target.value, i.id)
@@ -502,7 +619,8 @@ const ConstructorItemEditor = ({
                     </Box>
                   )}
                 </Box>
-              ) : undefined}
+              ) : undefined} */}
+              {renderedTabs}
             </Box>
           </>
         ) : undefined}

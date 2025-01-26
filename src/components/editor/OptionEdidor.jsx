@@ -82,6 +82,7 @@ const OptionEdidor = ({
   handleMobileImageChange,
   handleOptionMobileWidthChange,
   handleOptionMobileHeightChange,
+  handleOptionOrdeerChange,
 }) => {
   const { id } = useParams();
   const dispatch = useDispatch();
@@ -317,6 +318,13 @@ const OptionEdidor = ({
                 name="mobileHeight"
                 value={data.mobileHeight}
                 onChange={handleOptionMobileHeightChange}
+              />
+              <TextField
+                label="order"
+                variant="outlined"
+                name="order"
+                value={data.order}
+                onChange={handleOptionOrdeerChange}
               />
               <Box sx={{ mt: 3 }}>
                 <Typography variant="h6" gutterBottom>
