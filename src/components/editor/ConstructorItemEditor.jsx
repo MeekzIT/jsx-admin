@@ -120,17 +120,17 @@ const ConstructorItemEditor = ({
         );
   };
 
-  const handleOptionDescriptionChange = (newValue, id) => {
+  const handleOptionDescriptionChange = (newValue, id, name) => {
+    console.log(newValue, id, name, 111);
+
     setUpdatedData((prevData) =>
       prevData.map((item) =>
-        item.id === id ? { ...item, title: newValue } : item
+        item.id === id ? { ...item, [name]: JSON.stringify(newValue) } : item
       )
     );
   };
 
   const handleOptionPriceChange = (newValue, id) => {
-    console.log(newValue, id, 111);
-
     setUpdatedData((prevData) =>
       prevData.map((item) =>
         item.id === id ? { ...item, price: newValue } : item
@@ -313,8 +313,8 @@ const ConstructorItemEditor = ({
                   handleTitleChange={(event) =>
                     handleOptionTitleChange(event, i.id, true)
                   }
-                  handleDescriptionChange={(newValue) =>
-                    handleOptionDescriptionChange(newValue, i.id)
+                  handleDescriptionChange={(newValue, name) =>
+                    handleOptionDescriptionChange(newValue, i.id, name)
                   }
                   handleNewPriceChange={(e) =>
                     handleOptionPriceChange(e.target.value, i.id)
@@ -531,95 +531,6 @@ const ConstructorItemEditor = ({
                   handleHeightChange={handleNewHeightChange}
                 />
               </AddModal>
-              {/* {data?.ConstuctorItemOptions?.length ? (
-                <Box>
-                  {updatedData.length && (
-                    <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-                      <Tabs value={option} onChange={handleTabChange}>
-                        {updatedData?.map((i, idx) => {
-                          return (
-                            <Tab
-                              key={i?.id}
-                              label={i?.nameRu?.slice(0, 10)}
-                              {...a11yProps(idx)}
-                            />
-                          );
-                        })}
-                      </Tabs>
-                      {updatedData?.map((i, idx) => {
-                        return (
-                          <CustomTabPanel value={option} index={idx}>
-                            <Button
-                              onClick={() => {
-                                dispatch(setCopy(i));
-                              }}
-                            >
-                              <ContentCopyIcon />
-                              Copy
-                            </Button>
-                            <Box sx={{ display: "flex", alignItems: "center" }}>
-                              <NumbersIcon /> <h3>{i?.id}</h3>
-                            </Box>
-                            <OptionEdidor
-                              data={i}
-                              isNew={false}
-                              value={serviceTab}
-                              handleChange={handleServiceTabChange}
-                              handleTitleChange={(event) =>
-                                handleOptionTitleChange(event, i.id, true)
-                              }
-                              handleDescriptionChange={(newValue) =>
-                                handleOptionDescriptionChange(newValue, i.id)
-                              }
-                              handleNewPriceChange={(e) =>
-                                handleOptionPriceChange(e.target.value, i.id)
-                              }
-                              handleOptionOrdeerChange={(e) =>
-                                handleOptionOrdeerChange(e.target.value, i.id)
-                              }
-                              handleWidthChange={(e) =>
-                                handleOptionWidthChange(e.target.value, i.id)
-                              }
-                              handleHeightChange={(e) =>
-                                handleOptionHeightChange(e.target.value, i.id)
-                              }
-                              handleOptionMobileWidthChange={(e) =>
-                                handleOptionMobileWidthChange(
-                                  e.target.value,
-                                  i.id
-                                )
-                              }
-                              handleOptionMobileHeightChange={(e) =>
-                                handleOptionMobileHeightChange(
-                                  e.target.value,
-                                  i.id
-                                )
-                              }
-                              handleImageInConstructor={(event) =>
-                                handleConstructorImageChange(
-                                  event.target.checked,
-                                  i.id
-                                )
-                              }
-                              handleImageChange={(newValue) =>
-                                handleImageChange(newValue, i.id)
-                              }
-                              handleMobileImageChange={(newValue) =>
-                                handleMobileImageChange(newValue, i.id)
-                              }
-                              handleImageDelte={() => {
-                                handleImageDelte(i.id);
-                              }}
-                              handleEdit={() => handleEditOption(i.id)}
-                              handleDelete={() => handleDeleteOption(i.id)}
-                            />
-                          </CustomTabPanel>
-                        );
-                      })}
-                    </Box>
-                  )}
-                </Box>
-              ) : undefined} */}
               {renderedTabs}
             </Box>
           </>

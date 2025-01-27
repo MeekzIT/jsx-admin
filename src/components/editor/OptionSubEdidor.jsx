@@ -49,6 +49,7 @@ const OptionSubEdidor = ({
   handleImageInConstructor,
   handleNewPriceChange,
   handleImageChange,
+  handleOptionOrdeerChange,
   handleImageDelte,
   handleEdit,
   handleDelete,
@@ -166,6 +167,13 @@ const OptionSubEdidor = ({
                 name="height"
                 value={data.height}
                 onChange={handleHeightChange}
+              />
+              <TextField
+                label="Order"
+                variant="outlined"
+                name="height"
+                value={data.order}
+                onChange={handleOptionOrdeerChange}
               />
               <Box sx={{ mt: 3 }}>
                 <Typography variant="h6" gutterBottom>

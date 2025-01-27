@@ -237,6 +237,14 @@ const ConstructorItemSubEditor = ({
     setNewService(defaultKeys); // Reset the form
   };
 
+  const handleOptionOrdeerChange = (newValue, id) => {
+    setUpdatedData((prevData) =>
+      prevData.map((item) =>
+        item.id === id ? { ...item, order: newValue } : item
+      )
+    );
+  };
+
   const fieldsToTransform = {
     name: ["nameAm", "nameRu", "nameEn", "nameGe"],
     desc: ["descAm", "descRu", "descEn", "descGe"],
@@ -472,6 +480,9 @@ const ConstructorItemSubEditor = ({
                                 }
                                 handleWidthChange={(e) =>
                                   handleOptionWidthChange(e.target.value, i.id)
+                                }
+                                handleOptionOrdeerChange={(e) =>
+                                  handleOptionOrdeerChange(e.target.value, i.id)
                                 }
                                 handleHeightChange={(e) =>
                                   handleOptionHeightChange(e.target.value, i.id)

@@ -32,6 +32,7 @@ const Gallery = () => {
   const [newItem, setNewItem] = useState({
     width: "",
     height: "",
+    order: "",
     src: "",
   });
   const data = useSelector((state) => state.gallery.data);
@@ -50,7 +51,7 @@ const Gallery = () => {
   // Update local editValues when data changes
   useEffect(() => {
     const initialEditValues = data.reduce((acc, item) => {
-      acc[item.id] = { width: item.width, height: item.height, src: item.src };
+      acc[item.id] = { width: item.width, height: item.height, order: item.order, src: item.src };
       return acc;
     }, {});
     setEditValues(initialEditValues);
@@ -140,6 +141,7 @@ const Gallery = () => {
                 sx={{ mt: 2 }}
                 disabled={!isEditing[i.id]}
               />
+
               <TextField
                 label="Height"
                 variant="outlined"
@@ -152,6 +154,19 @@ const Gallery = () => {
                 }
                 disabled={!isEditing[i.id]}
                 sx={{ mt: 2 }}
+              />
+              <TextField
+                label="Order"
+                variant="outlined"
+                value={editValues[i.id]?.order || ""}
+                onChange={(e) =>
+                  setEditValues((prev) => ({
+                    ...prev,
+                    [i.id]: { ...prev[i.id], order: e.target.value },
+                  }))
+                }
+                sx={{ mt: 2 }}
+                disabled={!isEditing[i.id]}
               />
             </CardContent>
             <CardActions>
@@ -211,6 +226,15 @@ const Gallery = () => {
           fullWidth
           variant="outlined"
           value={newItem.height}
+          onChange={handleChange}
+          sx={{ mb: 2 }}
+        />
+        <TextField
+          label="Order"
+          name="order"
+          fullWidth
+          variant="outlined"
+          value={newItem.order}
           onChange={handleChange}
           sx={{ mb: 2 }}
         />
