@@ -66,6 +66,7 @@ const ConstructorItemSubEditor = ({
   handleDescriptionChange,
   handleRequireChange,
   handleWithValueChange,
+  handleOrdeerChange,
   handleEdit,
   handleDelete,
 }) => {
@@ -326,6 +327,13 @@ const ConstructorItemSubEditor = ({
               name="nameGe"
               value={data.nameGe}
               onChange={handleTitleChange}
+            />
+            <TextField
+              label="order"
+              variant="outlined"
+              name="order"
+              value={data.order}
+              onChange={handleOrdeerChange}
             />
           </Box>
           <Box sx={{ mt: 3 }}>

@@ -162,6 +162,14 @@ const OptionEdidor = ({
     );
   };
 
+  const handleOrdeerChange = (newValue, id) => {
+    setUpdatedData((prevData) =>
+      prevData.map((item) =>
+        item.id === id ? { ...item, order: newValue } : item
+      )
+    );
+  };
+
   const handleSubEdit = (itemId) => {
     const itemToEdit = updatedData.find((item) => item.id === itemId);
     dispatch(editSubItem(itemToEdit));
@@ -445,6 +453,9 @@ const OptionEdidor = ({
                         }
                         handleWithValueChange={(event) =>
                           handleWithValueChange(event.target.checked, item.id)
+                        }
+                        handleOrdeerChange={(e) =>
+                          handleOrdeerChange(e.target.value, item.id)
                         }
                         handleDescriptionChange={(newValue, name) =>
                           handleSubDescriptionChange(newValue, item.id, name)
