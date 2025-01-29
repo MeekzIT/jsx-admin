@@ -97,6 +97,39 @@ export const deleteData = (data) => {
   };
 };
 
+export const reorderData = (data) => {
+  return (dispatch) => {
+    axios
+      .put(`${keys.api}/gallery/reorder`, data, {
+        headers: {
+          Authorization: `Bearer ${keys.token}`,
+        },
+      })
+      .then(function (response) {
+        if (response.data.succes) {
+          Swal.fire({
+            position: "center",
+            iconColor: "#008491",
+            icon: "success",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        } else
+          Swal.fire({
+            position: "center",
+            iconColor: "#008491",
+            icon: "error",
+            showConfirmButton: false,
+            timer: 1500,
+            title: "Неправильные Данные",
+          });
+      })
+      .catch(function (error) {
+        console.error(error);
+      });
+  };
+};
+
 export const addData = (data) => {
   return (dispatch) => {
     axios

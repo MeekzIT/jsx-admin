@@ -15,11 +15,13 @@ import {
   editData,
   deleteData,
   addData,
+  reorderData, // Add new action
 } from "../../store/actions/gallery-action";
 import DeleteModal from "../../components/modals/DeleteModal";
 import ImageModal from "../../components/modals/ImageModal";
 import AddModal from "../../components/modals/AddModal";
 import CloudinaryUploadWidget from "../../components/cloudinaryUploadWidget/CloudinaryUploadWidget";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 const Gallery = () => {
   const dispatch = useDispatch();
@@ -44,6 +46,7 @@ const Gallery = () => {
     cropping: false,
     multiple: false,
   });
+
   useEffect(() => {
     dispatch(getData());
   }, [dispatch]);
@@ -51,50 +54,31 @@ const Gallery = () => {
   // Update local editValues when data changes
   useEffect(() => {
     const initialEditValues = data.reduce((acc, item) => {
-      acc[item.id] = { width: item.width, height: item.height, order: item.order, src: item.src };
+      acc[item.id] = {
+        width: item.width,
+        height: item.height,
+        order: item.order,
+        src: item.src,
+      };
       return acc;
     }, {});
     setEditValues(initialEditValues);
   }, [data]);
-  const addNewImage = (src) => {
-    return handleChange({
-      target: {
-        name: "src",
-        value: src,
-      },
-    });
-  };
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setNewItem((prev) => ({ ...prev, [name]: value }));
-  };
 
-  const toggleEdit = (id) => {
-    setIsEditing((prev) => ({ ...prev, [id]: !prev[id] }));
-  };
+  const handleDragEnd = (result) => {
+    if (!result.destination) return;
 
-  const handleSave = (id) => {
-    dispatch(editData({ id, ...editValues[id] }));
-    toggleEdit(id);
-  };
+    const reordered = Array.from(data);
+    const [movedItem] = reordered.splice(result.source.index, 1);
+    reordered.splice(result.destination.index, 0, movedItem);
 
-  const handleAddService = () => {
-    dispatch(addData(newItem));
-    setNewItem({ width: "", height: "", src: "" });
-    setOpenImg(false);
-  };
-
-  const handleDelete = (id) => {
-    dispatch(deleteData({ id }));
-  };
-
-  // Handle Image Change
-  const handleImageChange = (url) => {
-    setEditValues((prev) => ({
-      ...prev,
-      [current]: { ...prev[current], src: url },
+    // Update the order field
+    const updatedOrder = reordered.map((item, index) => ({
+      ...item,
+      order: index,
     }));
-    dispatch(editData({ id: current, src: url })); // Update the image in the Redux store
+    dispatch(reorderData({ items: updatedOrder }));
+    dispatch(getData());
   };
 
   return (
@@ -107,106 +91,139 @@ const Gallery = () => {
           Add
         </Button>
       </Box>
-      <Box sx={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
-        {data?.map((i) => (
-          <Card sx={{ maxWidth: 345 }} key={i.id}>
-            <CardMedia
-              sx={{ height: 140 }}
-              image={editValues[i.id]?.src || i.src}
-              title={i.src}
-            />
-            <CardContent>
-              <Box>
-                <Button
-                  variant="outlined"
-                  pt={2}
-                  onClick={() => {
-                    setCurrent(i.id);
-                    setOpenImg(true);
-                  }}
-                >
-                  Edit Image
-                </Button>
-              </Box>
-              <TextField
-                label="Width"
-                variant="outlined"
-                value={editValues[i.id]?.width || ""}
-                onChange={(e) =>
-                  setEditValues((prev) => ({
-                    ...prev,
-                    [i.id]: { ...prev[i.id], width: e.target.value },
-                  }))
-                }
-                sx={{ mt: 2 }}
-                disabled={!isEditing[i.id]}
-              />
 
-              <TextField
-                label="Height"
-                variant="outlined"
-                value={editValues[i.id]?.height || ""}
-                onChange={(e) =>
-                  setEditValues((prev) => ({
-                    ...prev,
-                    [i.id]: { ...prev[i.id], height: e.target.value },
-                  }))
-                }
-                disabled={!isEditing[i.id]}
-                sx={{ mt: 2 }}
-              />
-              <TextField
-                label="Order"
-                variant="outlined"
-                value={editValues[i.id]?.order || ""}
-                onChange={(e) =>
-                  setEditValues((prev) => ({
-                    ...prev,
-                    [i.id]: { ...prev[i.id], order: e.target.value },
-                  }))
-                }
-                sx={{ mt: 2 }}
-                disabled={!isEditing[i.id]}
-              />
-            </CardContent>
-            <CardActions>
-              {isEditing[i.id] ? (
-                <Button size="small" onClick={() => handleSave(i.id)}>
-                  Save
-                </Button>
-              ) : (
-                <Button size="small" onClick={() => toggleEdit(i.id)}>
-                  Edit
-                </Button>
-              )}
-              <Button
-                size="small"
-                color="error"
-                onClick={() => {
-                  setCurrent(i.id);
-                  setDel(true);
-                }}
-              >
-                Delete
-              </Button>
-            </CardActions>
-          </Card>
-        ))}
-      </Box>
+      {/* Drag and Drop Context */}
+      <DragDropContext onDragEnd={handleDragEnd}>
+        <Droppable droppableId="gallery">
+          {(provided) => (
+            <Box
+              sx={{ display: "flex", flexWrap: "wrap", gap: "10px" }}
+              ref={provided.innerRef}
+              {...provided.droppableProps}
+            >
+              {data?.map((i, index) => (
+                <Draggable key={i.id} draggableId={String(i.id)} index={index}>
+                  {(provided) => (
+                    <Card
+                      sx={{ maxWidth: 345 }}
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                    >
+                      <CardMedia
+                        sx={{ height: 140 }}
+                        image={editValues[i.id]?.src || i.src}
+                        title={i.src}
+                      />
+                      <CardContent>
+                        <Box>
+                          <Button
+                            variant="outlined"
+                            pt={2}
+                            onClick={() => {
+                              setCurrent(i.id);
+                              setOpenImg(true);
+                            }}
+                          >
+                            Edit Image
+                          </Button>
+                        </Box>
+                        <TextField
+                          label="Width"
+                          variant="outlined"
+                          value={editValues[i.id]?.width || ""}
+                          onChange={(e) =>
+                            setEditValues((prev) => ({
+                              ...prev,
+                              [i.id]: { ...prev[i.id], width: e.target.value },
+                            }))
+                          }
+                          sx={{ mt: 2 }}
+                          disabled={!isEditing[i.id]}
+                        />
+                        <TextField
+                          label="Height"
+                          variant="outlined"
+                          value={editValues[i.id]?.height || ""}
+                          onChange={(e) =>
+                            setEditValues((prev) => ({
+                              ...prev,
+                              [i.id]: { ...prev[i.id], height: e.target.value },
+                            }))
+                          }
+                          disabled={!isEditing[i.id]}
+                          sx={{ mt: 2 }}
+                        />
+                        <TextField
+                          label="Order"
+                          variant="outlined"
+                          value={editValues[i.id]?.order || ""}
+                          sx={{ mt: 2 }}
+                          disabled
+                        />
+                      </CardContent>
+                      <CardActions>
+                        {isEditing[i.id] ? (
+                          <Button
+                            size="small"
+                            onClick={() =>
+                              dispatch(
+                                editData({ id: i.id, ...editValues[i.id] })
+                              )
+                            }
+                          >
+                            Save
+                          </Button>
+                        ) : (
+                          <Button
+                            size="small"
+                            onClick={() =>
+                              setIsEditing((prev) => ({
+                                ...prev,
+                                [i.id]: !prev[i.id],
+                              }))
+                            }
+                          >
+                            Edit
+                          </Button>
+                        )}
+                        <Button
+                          size="small"
+                          color="error"
+                          onClick={() => {
+                            setCurrent(i.id);
+                            setDel(true);
+                          }}
+                        >
+                          Delete
+                        </Button>
+                      </CardActions>
+                    </Card>
+                  )}
+                </Draggable>
+              ))}
+              {provided.placeholder}
+            </Box>
+          )}
+        </Droppable>
+      </DragDropContext>
+
       <DeleteModal
         open={del}
         handleClose={() => setDel(false)}
-        handleDelete={() => handleDelete(current)}
+        handleDelete={() => dispatch(deleteData({ id: current }))}
       />
       <ImageModal
         open={openImg}
         handleClose={() => setOpenImg(false)}
-        handleImageChange={handleImageChange}
+        handleImageChange={(url) =>
+          dispatch(editData({ id: current, src: url }))
+        }
       />
       <AddModal
         open={add}
         handleClose={() => setAdd(false)}
-        handleAdd={handleAddService}
+        handleAdd={() => dispatch(addData(newItem))}
       >
         <Typography variant="h6" gutterBottom>
           Add New Item
@@ -217,7 +234,7 @@ const Gallery = () => {
           fullWidth
           variant="outlined"
           value={newItem.width}
-          onChange={handleChange}
+          onChange={(e) => setNewItem({ ...newItem, width: e.target.value })}
           sx={{ mb: 2 }}
         />
         <TextField
@@ -226,7 +243,7 @@ const Gallery = () => {
           fullWidth
           variant="outlined"
           value={newItem.height}
-          onChange={handleChange}
+          onChange={(e) => setNewItem({ ...newItem, height: e.target.value })}
           sx={{ mb: 2 }}
         />
         <TextField
@@ -235,14 +252,14 @@ const Gallery = () => {
           fullWidth
           variant="outlined"
           value={newItem.order}
-          onChange={handleChange}
+          onChange={(e) => setNewItem({ ...newItem, order: e.target.value })}
           sx={{ mb: 2 }}
         />
-        {newItem.src && <img src={newItem.src} alt="newIMage" />}
+        {newItem.src && <img src={newItem.src} alt="newImage" />}
         <CloudinaryUploadWidget
           uwConfig={uwConfig}
           name={"url"}
-          handleUpload={addNewImage}
+          handleUpload={(src) => setNewItem({ ...newItem, src })}
         />
       </AddModal>
     </Box>

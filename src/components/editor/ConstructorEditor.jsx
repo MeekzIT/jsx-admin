@@ -21,6 +21,7 @@ const ConstructorEditor = ({
   const [openDelImage, setOpenDelImage] = useState(false);
   const [openImg, setOpenImg] = useState(false);
   const [items, setItems] = useState(data.ConstuctorItems);
+  const [options, setOptions] = useState(data.ConstuctorItems || []);
   const handleOnDragEnd = (result) => {
     if (!result.destination) return;
 
@@ -35,6 +36,29 @@ const ConstructorEditor = ({
     setItems(updatedItems);
     dispatch(dndItems({ items }));
   };
+
+  const onDragEnd = (result, parentIndex) => {
+    if (!result.destination) return;
+
+    const newOptions = [...options];
+    const itemOptions = Array.from(
+      newOptions[parentIndex].ConstuctorItemOptions
+    );
+    const [reorderedItem] = itemOptions.splice(result.source.index, 1);
+    itemOptions.splice(result.destination.index, 0, reorderedItem);
+
+    // Update the order of each option after reordering
+    itemOptions.forEach((option, index) => {
+      option.order = index + 1; // Assuming the order starts from 1
+    });
+
+    newOptions[parentIndex].ConstuctorItemOptions = itemOptions;
+    setOptions(newOptions); // Update the local state
+    dispatch(dndItems({ items: newOptions })); // Dispatch to update global state
+  };
+
+  console.log(items, "options");
+
   return (
     <Card mb={2} sx={{ padding: "20px", minHeight: "300px" }}>
       <Box sx={{ display: "flex", gap: "30px" }}>
@@ -122,62 +146,169 @@ const ConstructorEditor = ({
           </Button>
         )}
       </Box>
-      {data.ConstuctorItems && (
-        <Box
-          sx={{
-            padding: "20px",
-            display: "flex",
-            gap: "20px",
-            flexDirection: "column",
-          }}
-        >
-          <Typography variant="h6" gutterBottom>
-            Собери сам Items
-          </Typography>
+      <Box sx={{ display: "flex" }}>
+        <div>
+          {" "}
+          {data.ConstuctorItems && (
+            <Box
+              sx={{
+                padding: "20px",
+                display: "flex",
+                gap: "20px",
+                flexDirection: "column",
+              }}
+            >
+              <Typography variant="h6" gutterBottom>
+                Собери сам Items
+              </Typography>
 
-          <DragDropContext onDragEnd={handleOnDragEnd}>
-            <Droppable droppableId="items">
-              {(provided) => (
-                <div {...provided.droppableProps} ref={provided.innerRef}>
-                  {items.map((i, index) => (
-                    <Draggable
-                      key={i.id}
-                      draggableId={String(i.id)}
-                      index={index}
-                    >
+              <DragDropContext onDragEnd={handleOnDragEnd}>
+                <Droppable droppableId="items">
+                  {(provided) => (
+                    <div {...provided.droppableProps} ref={provided.innerRef}>
+                      {items.map((i, index) => (
+                        <Draggable
+                          key={i.id}
+                          draggableId={String(i.id)}
+                          index={index}
+                        >
+                          {(provided) => (
+                            <div
+                              ref={provided.innerRef}
+                              {...provided.draggableProps}
+                              {...provided.dragHandleProps}
+                              style={{
+                                userSelect: "none",
+                                padding: "16px",
+                                margin: "0 0 8px 0",
+                                backgroundColor: "#f0f0f0",
+                                ...provided.draggableProps.style,
+                              }}
+                            >
+                              {i.nameRu}
+                            </div>
+                          )}
+                        </Draggable>
+                      ))}
+                      {provided.placeholder}
+                    </div>
+                  )}
+                </Droppable>
+              </DragDropContext>
+            </Box>
+          )}
+        </div>
+        <div>
+          {data.ConstuctorItems && (
+            <Box
+              sx={{
+                padding: "20px",
+                display: "flex",
+                gap: "20px",
+                flexDirection: "column",
+              }}
+            >
+              <Typography variant="h6" gutterBottom>
+                Собери сам Options
+              </Typography>
+              {options.map((item, parentIndex) => (
+                <div
+                  key={item.id}
+                  style={{
+                    userSelect: "none",
+                    padding: "16px",
+                    margin: "0 0 8px 0",
+                    backgroundColor: "#f0f0f0",
+                  }}
+                >
+                  <h4>{item.nameRu}</h4>
+                  <DragDropContext
+                    onDragEnd={(result) => onDragEnd(result, parentIndex)}
+                  >
+                    <Droppable droppableId={`droppable-${item.id}`}>
                       {(provided) => (
                         <div
                           ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
+                          {...provided.droppableProps}
                           style={{
-                            userSelect: "none",
-                            padding: "16px",
-                            margin: "0 0 8px 0",
-                            backgroundColor: "#f0f0f0",
-                            ...provided.draggableProps.style,
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: "10px",
                           }}
                         >
-                          {i.nameRu}
+                          {item.ConstuctorItemOptions.sort(
+                            (a, b) => a.order - b.order
+                          ).map((option, index) => {
+                            return (
+                              <>
+                                <Draggable
+                                  key={option.id}
+                                  draggableId={String(option.id)}
+                                  index={index}
+                                >
+                                  {(provided) => (
+                                    <div
+                                      ref={provided.innerRef}
+                                      {...provided.draggableProps}
+                                      {...provided.dragHandleProps}
+                                      style={{
+                                        backgroundColor: "#00838D",
+                                        padding: "10px",
+                                        borderRadius: "5px",
+                                        color: "white",
+                                        fontWeight: "bolder",
+                                        ...provided.draggableProps.style,
+                                      }}
+                                    >
+                                      {option.nameRu}
+                                    </div>
+                                  )}
+                                </Draggable>
+                                {option.ConstuctorOptionItems.length > 0 ? (
+                                  <div
+                                    style={{
+                                      display: "flex",
+                                      flexDirection: "column",
+                                      gap: "10px",
+                                    }}
+                                  >
+                                    {option.ConstuctorOptionItems.map((z) => {
+                                      return (
+                                        <div
+                                          style={{
+                                            width: "75%",
+                                            backgroundColor: "lightgrey",
+                                            padding: "10px",
+                                            borderRadius: "5px",
+                                            fontWeight: "bolder",
+                                          }}
+                                        >
+                                          {z.nam} asdasd
+                                        </div>
+                                      );
+                                    })}
+                                  </div>
+                                ) : null}
+                              </>
+                            );
+                          })}
                         </div>
                       )}
-                    </Draggable>
-                  ))}
-                  {provided.placeholder}
+                    </Droppable>
+                  </DragDropContext>
                 </div>
-              )}
-            </Droppable>
-          </DragDropContext>
-
-          <Button
-            variant="contained"
-            sx={{ width: "30%" }}
-            href={`/constructor/${data.id}`}
-          >
-            Edit Fields
-          </Button>
-        </Box>
-      )}
+              ))}
+            </Box>
+          )}
+        </div>
+      </Box>
+      <Button
+        variant="contained"
+        sx={{ width: "30%" }}
+        href={`/constructor/${data.id}`}
+      >
+        Edit Fields
+      </Button>
       <DeleteModal
         open={openDel}
         handleClose={() => setOpenDel(false)}
