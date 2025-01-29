@@ -1,10 +1,44 @@
 import React, { useState } from "react";
-import { Box, Button, Card, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Card,
+  Modal,
+  Tab,
+  Tabs,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import DeleteModal from "../modals/DeleteModal";
 import ImageModal from "../modals/ImageModal";
 import { useDispatch } from "react-redux";
-import { dndItems } from "../../store/actions/constructor-action";
+import {
+  dndItems,
+  getSingleData,
+  getSingleService,
+} from "../../store/actions/constructor-action";
+import ViewModuleIcon from "@mui/icons-material/ViewModule";
+import { useSelector } from "react-redux";
+import { useIsMobile } from "../../hooks/useScreenType";
+import { themePallete } from "../..";
+import DndModal from "./DndModal";
+function CustomTabPanel(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div role="tabpanel" hidden={value !== index} {...other}>
+      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+    </div>
+  );
+}
+
+function a11yProps(index) {
+  return {
+    id: `simple-tab-${index}`,
+    "aria-controls": `simple-tabpanel-${index}`,
+  };
+}
 
 const ConstructorEditor = ({
   data,
@@ -16,11 +50,35 @@ const ConstructorEditor = ({
   handleWidthChange,
   handleHeightChange,
 }) => {
+  const isMobile = useIsMobile();
+  const style = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: isMobile ? "100%" : 1000,
+    height: "70vh",
+    bgcolor: "background.paper",
+    border: `3px solid ${themePallete}`,
+    boxShadow: 24,
+    p: 4,
+    borderRadius: "10px",
+    minHeight: isMobile ? "100vh" : null,
+    display: isMobile && "flex",
+    justifyContent: isMobile && "center",
+    alignItems: isMobile && "center",
+    flexDirection: isMobile && "column",
+    gap: isMobile && "20px",
+    overflowY: "scroll",
+  };
   const dispatch = useDispatch();
   const [openDel, setOpenDel] = useState(false);
   const [openDelImage, setOpenDelImage] = useState(false);
+  const service = useSelector((state) => state.construct.service);
+
   const [openImg, setOpenImg] = useState(false);
   const [items, setItems] = useState(data.ConstuctorItems);
+  const [tab, setTab] = useState(false);
   const [options, setOptions] = useState(data.ConstuctorItems || []);
   const handleOnDragEnd = (result) => {
     if (!result.destination) return;
@@ -35,6 +93,11 @@ const ConstructorEditor = ({
 
     setItems(updatedItems);
     dispatch(dndItems({ items }));
+  };
+
+  const handleTabOpen = (id) => {
+    dispatch(getSingleService(id));
+    setTab(true);
   };
 
   const onDragEnd = (result, parentIndex) => {
@@ -57,7 +120,7 @@ const ConstructorEditor = ({
     dispatch(dndItems({ items: newOptions })); // Dispatch to update global state
   };
 
-  console.log(items, "options");
+  console.log(service, "options");
 
   return (
     <Card mb={2} sx={{ padding: "20px", minHeight: "300px" }}>
@@ -240,7 +303,12 @@ const ConstructorEditor = ({
                             (a, b) => a.order - b.order
                           ).map((option, index) => {
                             return (
-                              <>
+                              <div
+                                style={{
+                                  display: "flex",
+                                  flexDirection: "column",
+                                }}
+                              >
                                 <Draggable
                                   key={option.id}
                                   draggableId={String(option.id)}
@@ -257,39 +325,31 @@ const ConstructorEditor = ({
                                         borderRadius: "5px",
                                         color: "white",
                                         fontWeight: "bolder",
+                                        display: "flex",
+                                        justifyContent: "space-between",
                                         ...provided.draggableProps.style,
                                       }}
                                     >
                                       {option.nameRu}
+                                      {option.ConstuctorOptionItems.length >
+                                      0 ? (
+                                        <Button
+                                          sx={{
+                                            background: "white",
+                                          }}
+                                        >
+                                          <ViewModuleIcon
+                                            color="white"
+                                            onClick={() =>
+                                              handleTabOpen(option.id)
+                                            }
+                                          />
+                                        </Button>
+                                      ) : undefined}
                                     </div>
                                   )}
                                 </Draggable>
-                                {option.ConstuctorOptionItems.length > 0 ? (
-                                  <div
-                                    style={{
-                                      display: "flex",
-                                      flexDirection: "column",
-                                      gap: "10px",
-                                    }}
-                                  >
-                                    {option.ConstuctorOptionItems.map((z) => {
-                                      return (
-                                        <div
-                                          style={{
-                                            width: "75%",
-                                            backgroundColor: "lightgrey",
-                                            padding: "10px",
-                                            borderRadius: "5px",
-                                            fontWeight: "bolder",
-                                          }}
-                                        >
-                                          {z.nam} asdasd
-                                        </div>
-                                      );
-                                    })}
-                                  </div>
-                                ) : null}
-                              </>
+                              </div>
                             );
                           })}
                         </div>
@@ -302,6 +362,7 @@ const ConstructorEditor = ({
           )}
         </div>
       </Box>
+      <DndModal tab={tab} setTab={setTab} />
       <Button
         variant="contained"
         sx={{ width: "30%" }}

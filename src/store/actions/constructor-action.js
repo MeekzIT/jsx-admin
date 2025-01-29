@@ -226,6 +226,43 @@ export const dndItems = (data) => {
   };
 };
 
+export const dndOptions = (data) => {
+  return (dispatch) => {
+    axios
+      .post(`${keys.api}/constuctor/drag-options`, data, {
+        headers: {
+          Authorization: `Bearer ${keys.token}`,
+        },
+      })
+      .then(function (response) {
+        if (response.data.succes) {
+          dispatch({
+            type: DND_ITEMS,
+            payload: data,
+          });
+          Swal.fire({
+            position: "center",
+            iconColor: "#008491",
+            icon: "success",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        } else
+          Swal.fire({
+            position: "center",
+            iconColor: "#008491",
+            icon: "error",
+            showConfirmButton: false,
+            timer: 1500,
+            title: "Неправильные Данные",
+          });
+      })
+      .catch(function (error) {
+        console.error(error);
+      });
+  };
+};
+
 export const addItem = (data) => {
   return (dispatch) => {
     axios
