@@ -102,7 +102,7 @@ const ConstructorItemEditor = ({
     if (data) {
       setUpdatedData(data?.ConstuctorItemOptions);
     }
-  }, [data, service]);
+  }, [data]);
 
   const handleOptionTitleChange = (event, id, name) => {
     name
@@ -357,8 +357,8 @@ const ConstructorItemEditor = ({
     );
   }, [
     data?.ConstuctorItemOptions?.length,
-    updatedData,
-    option,
+    // updatedData,
+    // option,
     handleTabChange,
     dispatch,
     setCopy,
